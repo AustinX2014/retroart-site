@@ -1,0 +1,339 @@
+﻿html, body {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Arial', cursive;
+    color: white;
+    background-color: #1d1636;
+    overflow-x: hidden;
+}
+
+body {
+    background-size: 1280px 1440px;
+}
+
+*:focus {
+    outline: none;
+}
+
+a:not(.presskit):hover {
+    opacity: 0.7;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+ul {
+    text-align: left;
+    max-width: 680px;
+    padding-left: 65px;
+    padding-right: 25px;
+    margin: 15px auto;
+    line-height: 21px;
+}
+
+#content {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+    #content a {
+        color: #FF217C;
+    }
+
+    #content h1 {
+        text-align: center;
+        margin-top: 60px;
+    }
+
+    #content p {
+        max-width: 680px;
+        padding-left: 25px;
+        padding-right: 25px;
+        margin: 15px auto;
+        text-align: justify;
+        line-height: 21px;
+    }
+
+.list {
+    list-style-position: inside;
+    max-width: 500px;
+    padding-right: 25px;
+    margin: auto;
+}
+
+    .list li:not(:last-child) {
+        margin-bottom: 5px;
+    }
+
+img, svg {
+    position: absolute;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.images {
+    position: relative;
+    max-width: 650px;
+}
+
+/* toolbar */
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-track {
+    background: #40355f;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #673AB7;
+    border-radius: 20px;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #5E35B1;
+    }
+
+#voidArrow {
+    position: static;
+    width: 60px;
+    opacity: 0.5;
+    margin: 50px auto 10px;
+    transform: scale(-1);
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+    #voidArrow svg, #voidArrow a {
+        position: static;
+    }
+
+/* voidComposition */
+#voidLogo {
+    max-width: 650px;
+    width: 90%;
+    margin: 50px 0 0 0;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    position: relative;
+}
+
+    #voidLogo path {
+        fill-opacity: 0;
+        stroke-width: 8;
+        stroke-dasharray: 1465;
+    }
+
+/* media */
+#trailer {
+    position: relative;
+    max-width: 700px;
+    margin: 0px auto;
+    padding: 0 25px;
+    z-index: 2;
+}
+
+    #trailer > div {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0px;
+    }
+
+    #trailer iframe {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+    }
+
+.mediaBg {
+    height: 100%;
+    pointer-events: none;
+}
+
+.gallery {
+    max-width: 700px;
+    margin: auto;
+}
+
+    .gallery img {
+        width: calc(50% - 10px);
+        position: relative;
+        padding: 5px;
+        margin-right: -5px;
+        cursor: pointer;
+        vertical-align: top;
+    }
+
+.logos img {
+    width: calc(33.32% - 10px);
+}
+
+#googleDrive {
+    position: relative;
+    height: 100px;
+    max-width: 350px;
+    margin: 120px auto;
+    text-align: center;
+    cursor: pointer;
+}
+
+#googleDriveBg {
+    width: 800px;
+    height: 200px;
+    opacity: 0.2;
+    left: 50%;
+    transform: translate(-50%, 90px);
+}
+
+#googleDrive h1 {
+    font-size: 36px;
+    margin: 0 0 0 50px;
+}
+
+#googleDrive h2 {
+    font-weight: normal;
+}
+
+#googleDriveSvg {
+    height: 50px;
+    transform: translate(-162px, -5px);
+}
+
+#loader {
+    height: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 20px;
+}
+
+#langSwitch {
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    top: 50px;
+    right: 55px;
+}
+
+    #langSwitch a {
+        color: #fff;
+    }
+
+/* footer */
+footer {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    padding-top: 80px;
+    padding-bottom: 20px;
+    background-color: #483C6C;
+}
+
+    footer div {
+        position: absolute;
+    }
+
+    footer p, footer h2 {
+        text-align: center;
+        font-size: 20px;
+        position: relative;
+        vertical-align: middle;
+        margin: 0 0 20px 0;
+    }
+
+.social {
+    list-style: none;
+    text-align: center;
+    padding: 0;
+    margin: 20px 0 0 0;
+}
+
+    .social * {
+        position: static;
+    }
+
+    .social li {
+        display: inline;
+    }
+
+        .social li a {
+            display: inline-block;
+            margin: 0 0 0 20px;
+            position: relative;
+            font-size: 18px;
+            height: 40px;
+            line-height: 40px;
+            padding: 0 0 20px 50px;
+            transition: opacity .1s;
+        }
+
+            .social li a::before, #social li a .before {
+                content: "";
+                display: block;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width: 40px;
+                height: 40px;
+            }
+
+            .social li a.twitter::before, .social li a.twitter .before {
+                background-image: url("../assets/twitter.svg");
+            }
+
+            .social li a.facebook::before, .social li a.facebook .before {
+                background-image: url("../assets/facebook.svg");
+            }
+
+            .social li a.unity:before, .social li a.unity .before {
+                background-image: url("../assets/unity.svg");
+            }
+
+            .social li a.instagram:before, .social li a.instagram .before {
+                background-image: url("../assets/instagram.svg");
+            }
+
+            .social li a.pinterest:before, .social li a.pinterest .before {
+                background-image: url("../assets/pinterest.svg");
+            }
+
+#startingPlanet {
+    bottom: 0%;
+    left: 50%;
+    width: 500px;
+    height: 500px;
+    transform: translate(-50%, 63.9%);
+}
+
+    #startingPlanet .glow {
+        transform: scale(2.2);
+    }
+
+.presskit {
+    cursor: auto;
+    opacity: 0.7;
+}
+
+/* utils */
+.centerer {
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.hCenterer {
+    margin: auto;
+    left: 0;
+    right: 0;
+}
+/******************************
+queries
+******************************/

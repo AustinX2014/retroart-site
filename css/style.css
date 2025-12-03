@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  background-color: #000;
+}
+
+header {
+  margin-top: 3em;
+  text-align: center;
+  color: white;
+}
+
+header h1 {
+  font-size: 2em;
+  font-weight: 900;
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+#container3D canvas {
+  width: 100vw !important;
+  height: 100vh !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#container3D {
+    position: relative; /* Establecer el posicionamiento relativo */
+    width: 100%; /* Asegurar que ocupe todo el ancho del contenedor */
+}
+
+#colorSliderContainer {
+    position: absolute; /* Establecer el posicionamiento absoluto */
+    bottom: 10px; /* Ajustar la posición desde la parte inferior */
+    left: 50%; /* Centrar horizontalmente */
+    transform: translateX(-50%); /* Centrar horizontalmente */
+    z-index: 1; /* Asegurar que el control deslizante esté por encima del modelo 3D */
+}
