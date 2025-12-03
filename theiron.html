@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b0e14" />
+  <meta name="description" content="Descarga la traducción al español para The Iron Oath, con instrucciones sencillas de instalación." />
+  <title>The Iron Oath, traducción al español</title>
+
+  <!-- Fuente de estilo medieval para títulos + fuente legible para el cuerpo -->
+  <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0b0e14;          /* fondo principal */
+      --panel:#111826;       /* paneles */
+      --panel-2:#0f1420;     /* paneles secundarios */
+      --text:#e2e8f0;        /* texto principal */
+      --muted:#94a3b8;       /* texto tenue */
+      --accent:#c084fc;      /* acento lila */
+      --accent-2:#22d3ee;    /* acento cian */
+      --ok:#34d399;          /* verde */
+      --warn:#fbbf24;        /* ámbar */
+      --danger:#f87171;      /* rojo */
+      --radius:18px;         /* bordes redondeados */
+      --shadow:0 10px 30px rgba(0,0,0,.45);
+    }
+    html,body{height:100%;}
+    body{
+      margin:0; background: radial-gradient(1200px 800px at 10% -10%, rgba(34,211,238,.06), transparent 60%),
+                                radial-gradient(1000px 700px at 110% 10%, rgba(192,132,252,.06), transparent 60%),
+                                var(--bg);
+      color:var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      line-height:1.6;
+    }
+    .wrap{max-width:1100px; margin:0 auto; padding:28px;}
+
+    /* Encabezado */
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px; padding:24px; background: linear-gradient(180deg, rgba(255,255,255,.04), transparent);
+      border:1px solid rgba(148,163,184,.15); border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      position:sticky; top:14px; z-index:50; backdrop-filter: blur(6px);
+    }
+    .brand{
+      display:flex; align-items:center; gap:16px;
+    }
+    .logo{
+      width:48px; height:48px; border-radius:12px; background:
+        conic-gradient(from 210deg, var(--accent), var(--accent-2));
+      box-shadow:0 6px 20px rgba(34,211,238,.25), 0 6px 20px rgba(192,132,252,.25);
+      transform: rotate(7deg);
+    }
+    h1{
+      margin:0; font-family: 'Uncial Antiqua', serif; font-weight:400; letter-spacing:.5px; font-size: clamp(1.2rem, 2.2vw + .8rem, 2.2rem);
+      line-height:1.1; text-shadow: 0 2px 12px rgba(0,0,0,.6);
+    }
+    .subtitle{margin:0;color:var(--muted); font-size:.98rem}
+
+    nav a{color:var(--text); text-decoration:none; padding:10px 14px; border-radius:12px; border:1px solid rgba(148,163,184,.15)}
+    nav a:hover{background:rgba(148,163,184,.08)}
+
+    /* Hero */
+    .hero{
+      margin-top:22px; background:linear-gradient(180deg, rgba(17,24,38,.7), rgba(15,20,32,.7)), url('https://images.unsplash.com/photo-1547452919-516a7c68c6a5?q=80&w=1930&auto=format&fit=crop');
+      background-size:cover; background-position:center; border-radius:calc(var(--radius) + 6px);
+      padding:48px 26px; box-shadow:var(--shadow); border:1px solid rgba(148,163,184,.18);
+    }
+    .hero h2{font-family:'Uncial Antiqua', serif; font-size: clamp(1.1rem, 1.6vw + 1rem, 1.8rem); margin:0 0 8px}
+    .hero p{margin:0; max-width:850px; color:#d1d5db}
+
+    /* Panel de descargas */
+    .grid{display:grid; grid-template-columns: repeat(12, 1fr); gap:18px; margin-top:24px}
+    .card{
+      grid-column: span 12; background:var(--panel); border:1px solid rgba(148,163,184,.15);
+      border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden;
+    }
+    .card .hd{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 20px; background:linear-gradient(180deg, rgba(255,255,255,.03), transparent)}
+    .card .hd h3{margin:0; font-family:'Uncial Antiqua', serif; font-size:1.2rem}
+    .card .bd{padding:14px 20px}
+
+    /* Item de descarga */
+    .dl-item{display:grid; grid-template-columns: 1.2fr 2fr auto; gap:14px; align-items:center; padding:14px; border:1px solid rgba(148,163,184,.12); border-radius:14px; background:var(--panel-2); margin-bottom:12px}
+    .dl-item strong{font-weight:600}
+    .dl-item small{color:var(--muted)}
+    .paths{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .path{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background:#0b1220; color:#cbd5e1; padding:6px 10px; border-radius:10px; border:1px solid rgba(148,163,184,.18)}
+    .btn, button{cursor:pointer; border:1px solid rgba(148,163,184,.2); background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); color:var(--text); padding:10px 14px; border-radius:12px; font-weight:600}
+    .btn:hover, button:hover{transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,.25)}
+    .btn[disabled]{opacity:.6; cursor:not-allowed}
+
+    .tips{display:grid; gap:10px}
+    .tip{background:rgba(52,211,153,.08); border:1px solid rgba(52,211,153,.25); color:#d1fae5; padding:10px 12px; border-radius:12px}
+
+    /* Responsive */
+    @media (max-width: 860px){
+      .dl-item{grid-template-columns: 1fr; align-items:start}
+      .paths{justify-content:space-between}
+    }
+
+    /* Footer */
+    footer{margin:28px 0 18px; color:var(--muted); font-size:.9rem; text-align:center}
+    footer a{color:var(--accent-2); text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>The Iron Oath — Traducción al Español</h1>
+          <p class="subtitle">Parche de localización + instrucciones de instalación</p>
+        </div>
+      </div>
+      <nav>
+        <a href="#descargas">Descargas</a>
+        <a href="#instrucciones">Instrucciones</a>
+        <a href="#soporte">Soporte</a>
+     </nav>
+
+     <div style="position: fixed; top: 10px; right: 10px; z-index: 9999;">
+  <a href="https://www.hitwebcounter.com" target="_blank">
+   <img src="https://hitwebcounter.com/counter/counter.php?page=21408789&style=0030&nbdigits=5&type=page&initCount=5" 
+         title="Contador de Visitas" alt="Contador de Visitas" border="0" />
+  </a>
+</div>
+    </header>
+
+    <section class="hero" role="img" aria-label="Fondo con estética medieval">
+      <h2>¡Dale voz en español a tu campaña!</h2>
+      <p>
+        En esta página podrás descargar los archivos de traducción para <em>The Iron Oath</em>.
+        Cada descarga incluye una breve descripción y la ruta exacta donde debes sustituir el archivo original.
+        Te recomendamos realizar una <strong>copia de seguridad</strong> antes de reemplazar nada.
+      </p>
+    </section>
+
+    <!-- DESCARGAS -->
+    <section id="descargas" class="grid" aria-labelledby="descargas-title">
+      <article class="card">
+        <div class="hd">
+          <h3 id="descargas-title">Descargas</h3>
+          <button onclick="toggleHashes()" aria-pressed="false" id="hashToggle">Mostrar hashes</button>
+        </div>
+        <div class="bd">
+          <!-- ITEM 1 -->
+          <div class="dl-item">
+            <div>
+              <strong>Traducción principal (dialogos tutorial)</strong><br />
+              <small>Versión 1.0 · Compatible con build 1.2.x</small>
+            </div>
+            <div>
+              <p style="margin:6px 0 10px">Sustituye el archivo por este en el directorio <code class="path">\The Iron Oath\The Iron Oath_Data\StreamingAssets\Data\Systems</code></p>
+              <div class="paths">
+                <span class="path" data-path="\The Iron Oath\The Iron Oath_Data\StreamingAssets\Data\Systems">\The Iron Oath\The Iron Oath_Data\StreamingAssets\Data\Systems</span>
+                <button onclick="copyPath(this)" aria-label="Copiar ruta">Copiar ruta</button>
+              </div>
+            </div>
+            <div>
+              <a class="btn" href="theiron/Systems.rar" download>Systems .rar</a>
+              <div class="hash" hidden>
+                <small>SHA-256: <code>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></small>
+              </div>
+            </div>
+          </div>
+
+          <!-- ITEM 2 -->
+          <div class="dl-item">
+            <div>
+              <strong>Estados alterados, profesiones, altares</strong><br />
+              <small>Versión 1.0 · Opcional</small>
+            </div>
+            <div>
+              <p style="margin:6px 0 10px">Sustituye el archivo por este en el directorio <code class="path">\The Iron Oath\The Iron Oath_Data\StreamingAssets\Data\Dialogue\DynamicDialogue</code></p>
+              <div class="paths">
+                <span class="path" data-path="\The Iron Oath\The Iron Oath_Data\StreamingAssets\Data\Dialogue\DynamicDialogue/">\The Iron Oath\The Iron Oath_Data\StreamingAssets\Data\Dialogue\DynamicDialogue</span>
+                <button onclick="copyPath(this)">Copiar ruta</button>
+              </div>
+            </div>
+            <div>
+              <a class="btn" href="theiron/questDialogue.rar" download>questDialogue .rar</a>
+              <div class="hash" hidden>
+                <small>SHA-256: <code>yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy</code></small>
+              </div>
+            </div>
+          </div>
+
+          <!-- ITEM 3 -->
+          <div class="dl-item">
+            <div>
+              <strong>Codex</strong><br />
+              <small>Versión 1.0 · Opcional</small>
+            </div>
+            <div>
+              <p style="margin:6px 0 10px">Sustituye el archivo por este en el directorio <code class="path">"The Iron Oath\The Iron Oath_Data\StreamingAssets\Data\Codex</code></p>
+              <div class="paths">
+                <span class="path" data-path="The Iron Oath\The Iron Oath_Data\StreamingAssets\Data\Codex">The Iron Oath\The Iron Oath_Data\StreamingAssets\Data\Codex</span>
+                <button onclick="copyPath(this)">Copiar ruta</button>
+              </div>
+            </div>
+            <div>
+              <a class="btn" href="theiron/codex.rar" download>codex .rar</a>
+              <div class="hash" hidden>
+                <small>SHA-256: <code>zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz</code></small>
+              </div>
+            </div>
+          </div>
+
+          <!-- ITEM 4 -->
+          <div class="dl-item">
+            <div>
+              <strong>-----------</strong><br />
+              <small>Hotfix · 2025-08-16</small>
+            </div>
+            <div>
+              <p style="margin:6px 0 10px">Sustituye el archivo por este en el directorio <code class="path">ruta_del_juego/Content/Localization/</code></p>
+              <div class="paths">
+                <span class="path" data-path="ruta_del_juego/Content/Localization/">ruta_del_juego/Content/Localization/</span>
+                <button onclick="copyPath(this)">Copiar ruta</button>
+              </div>
+            </div>
+            <div>
+              <a class="btn" href="--------------" download>-----------</a>
+              <div class="hash" hidden>
+                <small>SHA-256: <code>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</code></small>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- INSTRUCCIONES -->
+      <article id="instrucciones" class="card">
+        <div class="hd"><h3>Instrucciones de instalación</h3></div>
+        <div class="bd tips">
+          <div class="tip">Haz una copia de seguridad de los archivos originales del juego antes de sustituirlos.</div>
+          <div class="tip">Cierra el juego y el cliente (Steam/Epic/GOG) antes de copiar los archivos.</div>
+          <div class="tip">Descomprime cada .zip y <strong>sustituye</strong> los archivos en la ruta indicada más arriba.</div>
+          <div class="tip">Si una actualización del juego revierte la traducción, repite el proceso con los archivos más recientes.</div>
+        </div>
+      </article>
+
+      <!-- SOPORTE -->
+      <article id="soporte" class="card">
+        <div class="hd"><h3>Soporte</h3></div>
+        <div class="bd">
+          <p>¿Dudas o sugerencias? Escríbenos a <a href="mailto:retroart82@gmail.com">retroart82@gmail.com</a> e indica la versión del juego y de la traducción.</p>
+        </div>
+      </article>
+    </section>
+
+     <footer>
+      Hecho con ♥ para la comunidad de <em>The Iron Oath</em>. Este proyecto no está afiliado con los desarrolladores del juego.
+      <div class="social-btns">
+        <a href="https://www.youtube.com/@retroart" target="_blank" rel="noopener">📺 Sígueme en YouTube</a>
+        <a href="https://www.instagram.com/retroart2020/" target="_blank" rel="noopener">📸 Sígueme en Instagram</a>
+        <a href="https://www.paypal.com/donate?business=austinx2010@gmail.com" target="_blank" rel="noopener">💖 Donar con PayPal</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    function copyPath(btn){
+      const pathEl = btn.parentElement.querySelector('[data-path]');
+      const value = pathEl?.getAttribute('data-path') || pathEl?.textContent || '';
+      if(!navigator.clipboard){
+        alert('Tu navegador no permite copiar al portapapeles automáticamente. Copia la ruta manualmente.');
+        return;
+      }
+      navigator.clipboard.writeText(value).then(()=>{
+        const old = btn.textContent; btn.textContent = '¡Copiado!'; btn.disabled = true;
+        setTimeout(()=>{btn.textContent = old; btn.disabled = false;}, 1600);
+      }).catch(()=> alert('No se pudo copiar.')); 
+    }
+    function toggleHashes(){
+      const blocks = document.querySelectorAll('.hash');
+      const anyHidden = [...blocks].some(b => b.hasAttribute('hidden'));
+      blocks.forEach(b => anyHidden ? b.removeAttribute('hidden') : b.setAttribute('hidden',''));
+      const t = document.getElementById('hashToggle');
+      const now = anyHidden;
+      t.setAttribute('aria-pressed', String(now));
+      t.textContent = now ? 'Ocultar hashes' : 'Mostrar hashes';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RETROART - Indie Game Studio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="scripts.js" defer></script>
+    <meta name="description" content="RETROART - Indie Game Studio. Explore our games and resources for developers with a retro style. We use Unity and Unreal Engine.">
+    <meta name="keywords" content="RETROART, Indie Studio, Video Games, Unity, Unreal Engine, Retro Games, Game Development">
+    <meta name="author" content="RETROART">
+    <meta property="og:title" content="RETROART - Indie Game Studio">
+    <meta property="og:description" content="Explore our games and resources for developers with a retro style. We use Unity and Unreal Engine.">
+    <meta property="og:image" content="images/logo.png">
+    <meta property="og:url" content="https://www.retroart.link">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="RETROART - Indie Game Studio">
+    <meta name="twitter:description" content="Explore our games and resources for developers with a retro style. We use Unity and Unreal Engine.">
+    <meta name="twitter:image" content="images/logo.png">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <div class="logo">
+                <img src="images/logo.png" alt="RETROART Logo">
+            </div>
+        </div>
+        <div class="header-center">
+            <h1><span>RETROART</span></h1> <!-- Se envuelve "RETROART" en un span -->
+            <div id="current-time"></div> <!-- Aquí se mostrará la hora -->
+        </div>
+    </header>
+        <div class="language-bar">
+            <div class="language-switcher">
+                <a href="index.html" class="active"><img src="images/es.png" alt="Español"></a>
+                <a href="index_en.html"><img src="images/en.png" alt="English"></a>
+            </div>
+            
+        </div>
+   
+       
+        <nav>
+            <ul>
+                <li><a href="index_en.html" >Home</a></li>
+                <li><a href="about_en.html">About Us</a></li>
+                <li><a href="products_en.html">Products</a></li>
+                <li><a href="contact_en.html"class="active">Contac</a></li>
+            </ul>
+        </nav>
+    <main>
+        <h2>Contact</h2>
+
+        <h4>Send me an email to <a href="mailto:retroart82@gmail.com">retroart82@gmail.com</a> preferably or fill out the contact form</h4>
+        <form id="contact-form" action="submit_form.php" method="post">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required class="large-textarea"></textarea>
+            
+            <button type="submit">Send</button>
+        </form>
+    </main>
+</body>
+<footer class="footer">
+			
+			
+
+    <div class="container">
+        <div class="icon_box_item">
+            <h4> <a href="https://retroart.s3.eu-west-3.amazonaws.com/Retroart+-+Privacy+Policy.html"> Privacy Policy</a> </h4>
+        </div>
+        <div> Copyright RetroArt 2020. All rights reserved.</div>
+    </div>
+    
+</html>
+

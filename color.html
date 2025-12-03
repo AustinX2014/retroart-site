@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector de Triada de Color con Paletas GPL</title>
+    <script>
+        // Variables globales para la paleta
+        let currentPalette = [];
+        
+        function calcularTriada(hex) {
+            let rgb = hexToRgb(hex);
+            if (!rgb) return;
+            let hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+            let triada1 = hslToHex((hsl.h + 120) % 360, hsl.s, hsl.l);
+            let triada2 = hslToHex((hsl.h + 240) % 360, hsl.s, hsl.l);
+            
+            document.getElementById('color1').style.backgroundColor = hex;
+            document.getElementById('color2').style.backgroundColor = triada1;
+            document.getElementById('color3').style.backgroundColor = triada2;
+            document.getElementById('valores').innerHTML = `
+                <p>Color Base: ${hex}</p>
+                <p>Triada 1: ${triada1}</p>
+                <p>Triada 2: ${triada2}</p>
+            `;
+            document.getElementById('colorInput').value = hex;
+            actualizarTriangulo(hsl.h);
+        }
+
+        function hexToRgb(hex) {
+            let bigint = parseInt(hex.slice(1), 16);
+            return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
+        }
+
+        function rgbToHsl(r, g, b) {
+            r /= 255, g /= 255, b /= 255;
+            let max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+            if (max === min) h = s = 0;
+            else {
+                let d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h *= 60;
+            }
+            return { h, s, l };
+        }
+
+        function hslToHex(h, s, l) {
+            let c = (1 - Math.abs(2 * l - 1)) * s;
+            let x = c * (1 - Math.abs((h / 60) % 2 - 1));
+            let m = l - c / 2;
+            let [r, g, b] = h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x] : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x];
+            return `#${[r, g, b].map(v => Math.round((v + m) * 255).toString(16).padStart(2, '0')).join('')}`;
+        }
+
+        function dibujarCirculo() {
+            let canvas = document.getElementById("circulo");
+            let ctx = canvas.getContext("2d");
+            let image = ctx.createImageData(canvas.width, canvas.height);
+            
+            for (let x = 0; x < canvas.width; x++) {
+                for (let y = 0; y < canvas.height; y++) {
+                    let dx = x - canvas.width / 2;
+                    let dy = y - canvas.height / 2;
+                    let distancia = Math.sqrt(dx * dx + dy * dy);
+                    let angulo = Math.atan2(dy, dx) * (180 / Math.PI);
+                    if (angulo < 0) angulo += 360;
+                    let colorHex = hslToHex(angulo, 1, 0.5);
+                    
+                    if (distancia < canvas.width / 2) {
+                        let index = (y * canvas.width + x) * 4;
+                        let rgb = hexToRgb(colorHex);
+                        image.data[index] = rgb.r;
+                        image.data[index + 1] = rgb.g;
+                        image.data[index + 2] = rgb.b;
+                        image.data[index + 3] = 255;
+                    }
+                }
+            }
+            ctx.putImageData(image, 0, 0);
+        }
+
+        function seleccionarColor(event) {
+            let canvas = document.getElementById("circulo");
+            let ctx = canvas.getContext("2d");
+            let x = event.offsetX;
+            let y = event.offsetY;
+            let pixel = ctx.getImageData(x, y, 1, 1).data;
+            let hex = `#${pixel[0].toString(16).padStart(2, '0')}${pixel[1].toString(16).padStart(2, '0')}${pixel[2].toString(16).padStart(2, '0')}`;
+            calcularTriada(hex);
+        }
+
+        function actualizarTriangulo(hue) {
+            let canvas = document.getElementById("circulo");
+            let ctx = canvas.getContext("2d");
+            
+            // Redibujar el círculo para limpiar el triángulo anterior
+            dibujarCirculo();
+            
+            // Configuración del triángulo
+            let radius = canvas.width / 2 - 10;
+            let centerX = canvas.width / 2;
+            let centerY = canvas.height / 2;
+            let angles = [hue, (hue + 120) % 360, (hue + 240) % 360];
+            
+            // Dibujar el triángulo
+            ctx.beginPath();
+            
+            // Calcular y dibujar los tres puntos
+            angles.forEach((angle, index) => {
+                let radian = (angle - 90) * Math.PI / 180; // -90 para que 0° esté arriba
+                let x = centerX + radius * Math.cos(radian);
+                let y = centerY + radius * Math.sin(radian);
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            
+            // Cerrar el triángulo
+            ctx.closePath();
+            
+            // Estilo del triángulo
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Puntos en los vértices
+            angles.forEach(angle => {
+                let radian = (angle - 90) * Math.PI / 180;
+                let x = centerX + radius * Math.cos(radian);
+                let y = centerY + radius * Math.sin(radian);
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
+            });
+        }
+        
+        // Función para cargar archivo GPL
+        function cargarPaletaGPL(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const contenido = e.target.result;
+                procesarArchivoGPL(contenido);
+            };
+            reader.readAsText(file);
+        }
+        
+        // Función para procesar el contenido del archivo GPL
+        function procesarArchivoGPL(contenido) {
+            currentPalette = [];
+            const lineas = contenido.split('\n');
+            let enColores = false;
+            
+            for (let linea of lineas) {
+                linea = linea.trim();
+                
+                // Saltar líneas vacías o de comentario
+                if (!linea || linea.startsWith('#')) continue;
+                
+                // Verificar si estamos en la sección de colores
+                if (linea.toLowerCase() === 'gimp palette') {
+                    enColores = true;
+                    continue;
+                }
+                
+                if (enColores) {
+                    // Procesar línea de color (formato: R G B    NombreOpcional)
+                    const partes = linea.split(/\s+/).filter(p => p !== '');
+                    if (partes.length >= 3) {
+                        const r = parseInt(partes[0]);
+                        const g = parseInt(partes[1]);
+                        const b = parseInt(partes[2]);
+                        const nombre = partes.slice(3).join(' ') || `Color ${currentPalette.length + 1}`;
+                        
+                        if (!isNaN(r) && !isNaN(g) && !isNaN(b)) {
+                            const hex = rgbToHex(r, g, b);
+                            currentPalette.push({ r, g, b, hex, nombre });
+                        }
+                    }
+                }
+            }
+            
+            mostrarPaleta();
+        }
+        
+        // Función auxiliar para convertir RGB a HEX
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => {
+                const hex = x.toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('');
+        }
+        
+        // Función para mostrar la paleta cargada
+        function mostrarPaleta() {
+            const contenedor = document.getElementById('paleta-container');
+            contenedor.innerHTML = '<h3>Paleta Cargada</h3>';
+            
+            if (currentPalette.length === 0) {
+                contenedor.innerHTML += '<p>No se encontraron colores en la paleta.</p>';
+                return;
+            }
+            
+            const grid = document.createElement('div');
+            grid.style.display = 'grid';
+            grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(80px, 1fr))';
+            grid.style.gap = '10px';
+            grid.style.marginTop = '15px';
+            
+            currentPalette.forEach((color, index) => {
+                const item = document.createElement('div');
+                item.style.display = 'flex';
+                item.style.flexDirection = 'column';
+                item.style.alignItems = 'center';
+                item.style.cursor = 'pointer';
+                
+                const muestra = document.createElement('div');
+                muestra.style.width = '50px';
+                muestra.style.height = '50px';
+                muestra.style.backgroundColor = color.hex;
+                muestra.style.border = '1px solid #000';
+                muestra.style.borderRadius = '4px';
+                muestra.title = `${color.nombre}\nRGB: ${color.r}, ${color.g}, ${color.b}\nHEX: ${color.hex}`;
+                
+                const nombre = document.createElement('div');
+                nombre.textContent = color.nombre.length > 8 ? color.nombre.substring(0, 6) + '...' : color.nombre;
+                nombre.style.fontSize = '0.8em';
+                nombre.style.textAlign = 'center';
+                nombre.style.marginTop = '5px';
+                nombre.style.width = '100%';
+                nombre.style.overflow = 'hidden';
+                nombre.style.textOverflow = 'ellipsis';
+                nombre.style.whiteSpace = 'nowrap';
+                
+                // Al hacer clic en un color de la paleta, lo seleccionamos
+                item.onclick = () => {
+                    calcularTriada(color.hex);
+                };
+                
+                item.appendChild(muestra);
+                item.appendChild(nombre);
+                grid.appendChild(item);
+            });
+            
+            contenedor.appendChild(grid);
+        }
+        
+        window.onload = function() {
+            dibujarCirculo();
+            // Configurar el evento para el input de archivo
+            document.getElementById('fileInput').addEventListener('change', cargarPaletaGPL);
+        };
+    </script>
+    <style>
+        body { 
+            text-align: center; 
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #triada div { 
+            width: 100px; 
+            height: 100px; 
+            display: inline-block; 
+            margin: 10px; 
+            border: 2px solid #000; 
+            border-radius: 8px;
+        }
+        canvas { 
+            display: block; 
+            margin: 20px auto; 
+            cursor: pointer; 
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        input { 
+            margin: 10px; 
+            padding: 8px; 
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #paleta-container {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .file-input-container {
+            margin: 15px 0;
+        }
+        .file-input-label {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #2196F3;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .file-input-label:hover {
+            background-color: #0b7dda;
+        }
+        #fileInput {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Retroart -Selector de Triada de Color-</h1>
+    <p>Selecciona un color en el círculo o carga una paleta GPL</p>
+    
+    <div class="file-input-container">
+        <label for="fileInput" class="file-input-label">Cargar paleta GPL</label>
+        <input type="file" id="fileInput" accept=".gpl">
+    </div>
+    
+    <input type="text" id="colorInput" placeholder="#ff0000" oninput="calcularTriada(this.value)">
+    <canvas id="circulo" width="300" height="300" onclick="seleccionarColor(event)"></canvas>
+    
+    <div id="paleta-container"></div>
+    
+    <h2>Triada</h2>
+    <div id="triada">
+        <div id="color1"></div>
+        <div id="color2"></div>
+        <div id="color3"></div>
+    </div>
+    <div id="valores"></div>
+    <foot>Copyright RetroArt 2020. All rights reserved.</foot>
+</body>
+</html>

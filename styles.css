@@ -1,0 +1,323 @@
+/* General styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Press Start 2P', cursive;
+    color: #fff;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: url('images/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin-top: 50px; /* Ajusta el margen superior para que el contenido no quede oculto detrás del nav */
+}
+
+/* Ajustes para el header */
+
+
+
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: hsl(0, 0%, 0%);
+    padding: 0px 10px; /* Ajusta el padding horizontal */
+    width: 100%;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    margin-bottom: 0; /* Eliminar margen inferior */
+}
+
+.header-center, .header-right {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.header-center {
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    padding-top: 15px;
+}
+
+.logo img {
+    height: 70px;
+    
+}
+
+.language-switcher {
+    display: flex;
+    gap: 10px;
+}
+
+.language-switcher img {
+    height: 40px;
+    width: 40px;
+    margin: 0;
+   
+}
+
+.language-bar {
+    background-color: #772af25a;
+    height: 40px; /* Altura de 40px */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px; /* Margen superior por defecto */
+}
+
+/* Media query para dispositivos móviles */
+@media (max-width: 768px) {
+    .language-bar {
+        margin-top: 80px; /* Cambia el margen superior a 80px en dispositivos móviles */
+    }
+}
+
+
+
+
+
+
+
+
+
+
+h1 {
+    margin: 0;
+    
+    font-size: 4em;
+    color: #ff0073;
+}
+
+/* Para pantallas pequeñas, como móviles */
+@media (max-width: 767px) {
+    h1 {
+        font-size: 1.5em; /* Ajusta este tamaño según tus necesidades */
+    }
+}
+
+/* Para pantallas medianas, como tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+    h1 {
+        font-size: 3em; /* Ajusta este tamaño según tus necesidades */
+    }
+}
+
+/* Para pantallas grandes, como desktops */
+@media (min-width: 1024px) {
+    h1 {
+        font-size: 4em; /* Puedes mantener el tamaño original aquí */
+    }
+}
+
+h2 {
+   color: #db7cf3;
+}
+
+h3 {
+    color: #9614ed;
+ }
+
+ /* Estilos base para el nav */
+nav {
+    position: fixed; /* Mantén el nav fijo */
+    top: 1; /* Posiciónalo en la parte superior */
+    width: 100%; /* Que ocupe todo el ancho */
+    height: 40px; /* Altura del nav en dispositivos de escritorio */
+    background-color: #4c39f78f;
+    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+    overflow-x: auto; /* Permite el desplazamiento horizontal si es necesario */
+    overflow-y: hidden; /* Impide el desplazamiento vertical */
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    margin-top: 12px;
+    padding: o;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 5px; /* Ajusta el margen entre elementos */
+}
+
+nav ul li a {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    padding: 5px; /* Aumenta el padding para facilitar el clic en dispositivos táctiles */
+}
+
+nav ul li a.active {
+    background-color: #ff0073;
+}
+
+/* Estilos específicos para dispositivos móviles */
+@media screen and (max-width: 768px) {
+    nav {
+        height: auto; /* Altura automática para adaptarse a la cantidad de elementos */
+    }
+
+    nav ul {
+        flex-wrap: wrap; /* Permite que los elementos se envuelvan en varias líneas */
+        justify-content: flex-start; /* Alinea los elementos al inicio */
+    }
+
+    nav ul li {
+        flex: 0 0 50%; /* Cada elemento ocupa el 50% del ancho disponible */
+        margin: 5px 0; /* Ajusta el margen vertical entre elementos */
+    }
+}
+/* Main content styles */
+main {
+    background: #00000099;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra verticalmente */
+    align-items: center; /* Centra horizontalmente */
+    text-align: center;
+    padding: 20px;
+    
+    margin: 100px 20px 20px; /* Asegura que el contenido esté por debajo del encabezado y la navegación */
+   
+    
+   
+}
+
+main h2 {
+    margin: 20px 0;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 767px) {
+    main {
+        margin: 80px 10px 10px; /* Ajusta los márgenes para móviles */
+        padding: 10px; /* Reduce el padding para pantallas pequeñas */
+       /* min-height: calc(100vh - 100px); /* Ajusta la altura mínima */
+    }
+}
+
+/* Ajustes para pantallas medianas */
+@media (min-width: 768px) and (max-width: 1023px) {
+    main {
+        margin: 90px 15px 15px; /* Ajusta los márgenes para tablets */
+        padding: 15px; /* Ajusta el padding para pantallas medianas */
+       /* min-height: calc(100vh - 120px); /* Ajusta la altura mínima */
+    }
+}
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+label {
+    margin-bottom: 5px;
+}
+
+input, textarea {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.large-textarea {
+    width: calc(2 * 100%);
+    height: calc(3 * 10px);
+    max-width: calc(2 * 400px);
+    min-height: calc(3 * 100px);
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #000;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.instagram {
+    text-align: center; /* Centra el contenido horizontalmente */
+    margin-top: 20px; /* Margen superior para separar del contenido superior */
+    padding: 20px; /* Padding interno para espacio alrededor del contenido */
+
+    /* Ajuste de tamaño del div */
+    width: 100%; /* Opcional: Ancho del 100% del contenedor padre */
+    max-width: 600px; /* Máximo ancho del div */
+
+    /* Estilo del título */
+    h2 {
+        font-size: 1.5em; /* Tamaño del título */
+        margin-bottom: 10px; /* Espacio inferior para separar de los íconos */
+    }
+
+    /* Estilo de los íconos */
+    .fa {
+        font-size: 2em; /* Tamaño de los íconos */
+        margin: 0 10px; /* Margen entre los íconos */
+        color: #f8f6f6; /* Color del ícono (puedes cambiarlo según tu diseño) */
+        text-decoration: none; /* Quita el subrayado predeterminado de los enlaces */
+    }
+
+    /* Estilo específico para el ícono de Instagram */
+    .fa-instagram {
+        color: #ff70ea; /* Color específico para Instagram */
+    }
+
+    .fa-youtube {
+
+        color: #f80606; /* Color específico para Instagram */
+    }
+
+   .fa-twitter{
+    color: #33a5f7; /* Color específico para Instagram */
+    
+}
+
+
+#current-time {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 2em;
+    color: #ffffff; /* Color de la hora */
+    position: absolute;
+    top: 50px; /* Ajusta la posición verticalmente según tu diseño */
+    right: 20px; /* Ajusta la posición a la derecha según tu diseño */
+}
+
+.product {
+    text-align: center; /* Centra el contenido */
+    max-width: 600px; /* Ancho máximo del contenedor, ajusta según tus necesidades */
+    margin: 0 auto; /* Centra horizontalmente */
+    padding: 20px; /* Espaciado interno */
+}
+
+.product img {
+    max-width: 100%; /* Hace que la imagen sea responsive */
+    height: 50%; /* Ajusta automáticamente la altura */
+    width: 50%;
+    display: block; /* Evita el espacio adicional debajo de la imagen */
+}
+
+
+
+}

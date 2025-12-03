@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de Imágenes</title>
+    <meta name="description" content="An unforgiving hardcore fantasy FPS dungeon PvPvE adventure. Band together with your friends and use your courage, wits, and cunning to uncover mythical treasures, defeat gruesome monsters, while staying one step ahead of the other devious treasure-hunters.">
+    <meta name="description" content="Map Dark and Darker">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap');
+
+        body {
+            font-family: 'UnifrakturCook', Arial, sans-serif; /* Fuente gótica */
+            color: #f0f0f0; /* Color blanco para el texto */
+            text-shadow: 1px 1px 2px black; /* Borde negro para el texto */
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            background-image: url('fondo.jpg'); /* Reemplaza esta ruta con la de tu imagen */
+            background-size: cover; /* Hace que la imagen cubra todo el fondo */
+            background-position: center; /* Centra la imagen en la pantalla */
+            background-repeat: no-repeat; /* Evita que la imagen se repita */
+            background-attachment: fixed; /* Hace que la imagen de fondo permanezca fija al hacer scroll */
+        }
+
+        header {
+            width: 100%;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+        }
+
+        header img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px; /* Espacio para separar la galería de la cabecera */
+        }
+
+        .image-container {
+            text-align: center;
+        }
+
+        .gallery img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            margin: auto;
+            display: block;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .gallery img {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="cabecera.webp" alt="Imagen de Cabecera">
+    </header>
+    <main>
+        <div class="gallery">
+            <div class="image-container">
+                <h3>Inferno 1</h3>
+                <img src="map1.PNG" alt="Imagen 1" onclick="openModal(this.src)">
+            </div>
+            <div class="image-container">
+                <h3>Inferno 2</h3>
+                <img src="map2.PNG" alt="Imagen 2" onclick="openModal(this.src)">
+            </div>
+            <div class="image-container">
+                <h3>Ice Cavern 1</h3>
+                <img src="map3.PNG" alt="Imagen 3" onclick="openModal(this.src)">
+            </div>
+            <div class="image-container">
+                <h3>Ice Abyss</h3>
+                <img src="map4.PNG" alt="Imagen 4" onclick="openModal(this.src)">
+            </div>
+            <div class="image-container">
+                <h3>Crypt 1</h3>
+                <img src="map5.PNG" alt="Imagen 5" onclick="openModal(this.src)">
+            </div>
+            <div class="image-container">
+                <h3>Crypt 2</h3>
+                <img src="map6.PNG" alt="Imagen 6" onclick="openModal(this.src)">
+            </div>
+            <div class="image-container">
+                <h3>Goblin Cave</h3>
+                <img src="map7.PNG" alt="Imagen 7" onclick="openModal(this.src)">
+            </div>
+        </div>
+
+        <div id="myModal" class="modal">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img class="modal-content" id="img01">
+        </div>
+
+        <script>
+            function openModal(src) {
+                document.getElementById("myModal").style.display = "flex";
+                document.getElementById("img01").src = src;
+            }
+
+            function closeModal() {
+                document.getElementById("myModal").style.display = "none";
+            }
+        </script>
+    </main>
+</body>
+</html>
