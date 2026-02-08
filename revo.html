@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruleta Rusa: Torneo Clandestino</title>
+    <title>Ruleta Rusa: Saloon del Destino</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rye&display=swap" rel="stylesheet">
+    
     <style>
         :root { --oro: #ffd700; --rojo: #ff0000; --fondo: #0a0a0a; }
         
         body { 
-            background-image: url('img/fondo.jpg'); /* Imagen de fondo añadida */
+            background-image: url('img/fondo.jpg'); 
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -22,11 +24,21 @@
             margin: 0; 
         }
 
+        /* Títulos estilo Oeste */
+        h1, .titulo-oeste {
+            font-family: 'Rye', serif;
+            color: var(--oro);
+            text-shadow: 3px 3px 0px #4b3621, 5px 5px 15px #000;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
         /* Pantalla de Inicio */
         #overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.95); display: flex; flex-direction: column; 
             justify-content: center; align-items: center; z-index: 100; 
+            text-align: center;
         }
 
         /* Rectángulo de juego con borde dorado */
@@ -34,9 +46,9 @@
             width: 90%;
             max-width: 750px; 
             padding: 25px; 
-            border: 5px solid var(--oro); /* Borde dorado */
+            border: 8px double var(--oro); /* Borde estilo marco antiguo */
             text-align: center; 
-            background: rgba(18, 18, 18, 0.9); /* Un poco transparente para ver el fondo */
+            background: rgba(18, 18, 18, 0.92); 
             display: none; 
             box-shadow: 0 0 50px #000;
             margin: 20px;
@@ -45,7 +57,7 @@
         /* Adaptabilidad para móvil (Vertical) */
         .duelo-container { 
             display: flex; 
-            flex-direction: row; /* Horizontal en PC */
+            flex-direction: row; 
             justify-content: space-around; 
             align-items: center; 
             margin: 20px 0; 
@@ -53,16 +65,9 @@
         }
 
         @media (max-width: 600px) {
-            .duelo-container {
-                flex-direction: column; /* Vertical en Móvil */
-            }
-            #pantalla-juego {
-                width: 95%;
-                padding: 15px;
-            }
-            /* Orden específico solicitado: Jugador -> Revolver -> Enemigo */
+            .duelo-container { flex-direction: column; }
             #cont-jugador { order: 1; }
-            .ruleta-container { order: 2; margin: 20px 0; }
+            .ruleta-container { order: 2; margin: 30px 0; }
             #cont-enemigo { order: 3; }
         }
         
@@ -70,74 +75,79 @@
         .retrato { 
             width: 180px; 
             height: 270px; 
-            border: 3px solid var(--oro); /* Borde dorado */
+            border: 4px solid var(--oro); 
             position: relative; 
             transition: all 0.5s ease; 
             overflow: hidden;
             background: #000;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
         .retrato img { width: 100%; height: 100%; object-fit: cover; }
         
         .nombre-tag {
             position: absolute; bottom: 0; width: 100%; 
-            background: rgba(0,0,0,0.8); color: var(--oro); 
-            padding: 5px 0; font-size: 12px;
+            background: rgba(43, 30, 22, 0.9); /* Color madera oscura */
+            color: var(--oro); 
+            padding: 8px 0; font-size: 13px;
+            font-family: 'Rye', serif;
         }
 
-        .desactivado { filter: grayscale(100%) brightness(30%); transform: scale(0.95); border-color: #444; }
-        .activo { filter: grayscale(0%) brightness(100%); border-color: var(--oro); transform: scale(1.05); box-shadow: 0 0 15px var(--oro); }
+        .desactivado { filter: grayscale(100%) brightness(30%); border-color: #555; }
+        .activo { filter: grayscale(0%) brightness(100%); border-color: var(--oro); transform: scale(1.05); box-shadow: 0 0 25px var(--oro); }
 
         /* Globo de Diálogo */
         #bocadillo {
-            position: absolute; top: 10px; right: 10px; background: white; 
-            color: black; padding: 10px; border-radius: 5px; font-size: 11px; 
-            font-weight: bold; display: none; z-index: 20; width: 140px;
-            box-shadow: 0 0 10px var(--oro);
+            position: absolute; top: 10px; right: 10px; background: #fdf5e6; 
+            color: #2b1e16; padding: 12px; border-radius: 5px; font-size: 12px; 
+            font-weight: bold; display: none; z-index: 20; width: 150px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); border: 1px solid #d2b48c;
         }
 
         /* Ruleta */
-        .ruleta-container { position: relative; width: 100px; height: 100px; }
+        .ruleta-container { position: relative; width: 110px; height: 110px; }
         .tambor { 
             width: 100%; height: 100%; background: #222; border-radius: 50%; 
-            position: relative; border: 4px solid #111;
+            position: relative; border: 5px solid #1a1a1a;
             transition: transform 1.5s cubic-bezier(0.15, 0, 0.15, 1); 
         }
         .agujero { 
-            width: 16px; height: 16px; background: #000; border-radius: 50%; 
-            position: absolute; top: 42px; left: 42px; 
+            width: 18px; height: 18px; background: #000; border-radius: 50%; 
+            position: absolute; top: 46px; left: 46px; 
         }
         .agujero.cargado { background: radial-gradient(circle, #ffd700, #b8860b); border: 1px solid #fff; }
         .indicador { 
-            position: absolute; top: -12px; left: 50%; transform: translateX(-50%); 
-            border-top: 15px solid var(--rojo); border-left: 8px solid transparent; 
-            border-right: 8px solid transparent; z-index: 10; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%); 
+            border-top: 20px solid var(--rojo); border-left: 10px solid transparent; 
+            border-right: 10px solid transparent; z-index: 10; 
         }
 
         /* Controles */
-        .controles { margin-top: 20px; }
         button { 
-            background: var(--rojo); color: white; border: none; 
-            padding: 15px 25px; cursor: pointer; font-family: 'Courier New'; 
-            font-weight: bold; letter-spacing: 1px;
-            border: 1px solid white;
+            background: #4b3621; color: var(--oro); border: 2px solid var(--oro); 
+            padding: 15px 30px; cursor: pointer; font-family: 'Rye', serif; 
+            font-size: 1rem; letter-spacing: 1px;
+            box-shadow: 0 4px 0 #2b1e16;
         }
-        button:hover { background: #ff4444; }
-        button:disabled { background: #333; cursor: not-allowed; border-color: #555; }
+        button:hover { background: #5d432c; transform: translateY(-2px); }
+        button:active { transform: translateY(2px); box-shadow: none; }
+        button:disabled { background: #333; color: #666; border-color: #555; }
 
+        input[type="number"] { padding:10px; width:50px; background:#000; color:var(--oro); border:1px solid var(--oro); font-family: 'Rye'; }
+        
         .vol-cont { margin-top: 25px; border-top: 1px solid #444; padding-top: 15px; }
-        input[type="range"] { accent-color: var(--rojo); width: 150px; }
+        input[type="range"] { accent-color: var(--oro); width: 150px; }
     </style>
 </head>
 <body>
 
 <div id="overlay">
-    <h1 style="color: var(--oro); font-size: 2.5rem; text-align: center;">RULETA RUSA</h1>
-    <p>¿Tienes el valor suficiente?</p><br>
-    <button onclick="comenzarJuego()">ENTRAR AL CASINO</button>
+    <h1>RULETA RUSA</h1>
+    <p style="font-family: 'Rye'; font-size: 0.9rem;">EL SALON DEL JUEGO</p><br>
+    <button onclick="comenzarJuego()">DESENFUNDAR</button>
 </div>
 
 <div id="pantalla-juego">
-    <div id="pozo-mesa" style="color: var(--oro); font-size: 1.5rem; text-shadow: 2px 2px #000;">POZO: $0</div>
+    <div id="pozo-mesa" class="titulo-oeste" style="font-size: 1.8rem;">POZO: $0</div>
 
     <div class="duelo-container">
         <div id="cont-jugador" class="retrato activo">
@@ -148,12 +158,12 @@
         <div class="ruleta-container">
             <div class="indicador"></div>
             <div id="tambor" class="tambor">
-                <div class="agujero" style="transform: rotate(0deg) translateY(-35px);"></div>
-                <div class="agujero" style="transform: rotate(60deg) translateY(-35px);"></div>
-                <div class="agujero" style="transform: rotate(120deg) translateY(-35px);"></div>
-                <div class="agujero" style="transform: rotate(180deg) translateY(-35px);"></div>
-                <div class="agujero" style="transform: rotate(240deg) translateY(-35px);"></div>
-                <div class="agujero" style="transform: rotate(300deg) translateY(-35px);"></div>
+                <div class="agujero" style="transform: rotate(0deg) translateY(-40px);"></div>
+                <div class="agujero" style="transform: rotate(60deg) translateY(-40px);"></div>
+                <div class="agujero" style="transform: rotate(120deg) translateY(-40px);"></div>
+                <div class="agujero" style="transform: rotate(180deg) translateY(-40px);"></div>
+                <div class="agujero" style="transform: rotate(240deg) translateY(-40px);"></div>
+                <div class="agujero" style="transform: rotate(300deg) translateY(-40px);"></div>
             </div>
         </div>
 
@@ -165,19 +175,18 @@
     </div>
 
     <div class="controles" id="ui-main">
-        <label>BALAS:</label>
-        <input type="number" id="input-balas" value="1" min="1" max="5" style="padding:10px; width:50px; background:#000; color:var(--oro); border:1px solid var(--oro);">
-        <button id="btn-disparar" onclick="logicaJugador()">GATILLO</button>
+        <label style="font-family:'Rye'; font-size: 0.8rem;">BALAS:</label>
+        <input type="number" id="input-balas" value="1" min="1" max="5">
+        <button id="btn-disparar" onclick="logicaJugador()">¡FUEGO!</button>
     </div>
 
     <div class="vol-cont">
-        <span style="font-size: 10px; color: #888;">VOLUMEN</span><br>
+        <span style="font-size: 10px; color: #888; font-family:'Rye'">VOLUMEN</span><br>
         <input type="range" id="vol-slider" min="0" max="1" step="0.1" value="0.5">
     </div>
 </div>
 
 <script>
-    // --- AUDIO ---
     const sfx = {
         click: new Audio('sound/click.mp3'),
         girar: new Audio('sound/girar.mp3'),
@@ -188,10 +197,10 @@
     musica.loop = true;
 
     const enemigos = [
-        { n: "EL NOVATO", i: "img/enemigo1.jpg", d: 1, f: "He visto a muchos como tú caer..." },
-        { n: "EL TAHÚR", i: "img/enemigo2.jpg", d: 2, f: "La suerte es para los débiles." },
-        { n: "LA SOMBRA", i: "img/enemigo3.jpg", d: 3, f: "No parpadees, será rápido." },
-        { n: "DON CORLE", i: "img/enemigo4.jpg", d: 5, f: "Llegaste a tu destino final." }
+        { n: "JACK EL TUERTO", i: "img/enemigo1.jpg", d: 1, f: "¡Este pueblo es pequeño para los dos!" },
+        { n: "LINDA JACKSON", i: "img/enemigo2.jpg", d: 2, f: "¿Eres rápido, o solo ruidoso?" },
+        { n: "MIRADA DE MUERTE", i: "img/enemigo3.jpg", d: 3, f: "Tengo un lugar para ti en el cementerio." },
+        { n: "EL SHERIFF", i: "img/enemigo4.jpg", d: 5, f: "La ley termina en la punta de mi bala." }
     ];
 
     let nivel = parseInt(localStorage.getItem('nivelRuleta')) || 0;
@@ -211,7 +220,7 @@
 
     function cargarNivel() {
         if(nivel >= enemigos.length) {
-            alert("¡HAS GANADO EL TORNEO!");
+            alert("¡HAS LIMPIADO EL OESTE! Eres la leyenda más grande.");
             localStorage.clear(); location.reload(); return;
         }
         const e = enemigos[nivel];
@@ -222,14 +231,12 @@
         const b = document.getElementById("bocadillo");
         b.innerText = e.f;
         b.style.display = "block";
-        setTimeout(() => b.style.display = "none", 3000);
+        setTimeout(() => b.style.display = "none", 3500);
     }
 
     function cambiarTurno(esJugador) {
-        document.getElementById("cont-jugador").classList.toggle("activo", esJugador);
-        document.getElementById("cont-jugador").classList.toggle("desactivado", !esJugador);
-        document.getElementById("cont-enemigo").classList.toggle("activo", !esJugador);
-        document.getElementById("cont-enemigo").classList.toggle("desactivado", esJugador);
+        document.getElementById("cont-jugador").className = esJugador ? "retrato activo" : "retrato desactivado";
+        document.getElementById("cont-enemigo").className = esJugador ? "retrato desactivado" : "retrato activo";
     }
 
     function animar(callback) {
@@ -247,7 +254,7 @@
         animar(() => {
             if (Math.floor(Math.random() * 6) + 1 <= bCount) {
                 sfx.disparo.play();
-                alert("HAS MUERTO.");
+                alert("CAÍSTE EN EL DUELO.");
                 localStorage.setItem('dineroRuleta', 1000);
                 localStorage.setItem('nivelRuleta', 0);
                 location.reload();
@@ -268,7 +275,7 @@
         animar(() => {
             if (Math.floor(Math.random() * 6) + 1 <= bIA) {
                 sfx.disparo.play();
-                alert("¡EL ENEMIGO HA CAÍDO!");
+                alert("¡LE HAS ENTERRADO!");
                 dinero += pozo;
                 nivel++;
                 localStorage.setItem('dineroRuleta', dinero);
