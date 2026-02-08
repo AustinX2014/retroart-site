@@ -197,7 +197,7 @@
     musica.loop = true;
 
     const enemigos = [
-        { n: "JACK EL TUERTO", i: "img/enemigo1.jpg", d: 1, f: "¡Este pueblo es pequeño para los dos!" },
+        { n: "JACK EL RAPIDO", i: "img/enemigo1.jpg", d: 1, f: "¡Este pueblo es pequeño para los dos!" },
         { n: "LINDA JACKSON", i: "img/enemigo2.jpg", d: 2, f: "¿Eres rápido, o solo ruidoso?" },
         { n: "MIRADA DE MUERTE", i: "img/enemigo3.jpg", d: 3, f: "Tengo un lugar para ti en el cementerio." },
         { n: "EL SHERIFF", i: "img/enemigo4.jpg", d: 5, f: "La ley termina en la punta de mi bala." }
@@ -275,7 +275,7 @@
         animar(() => {
             if (Math.floor(Math.random() * 6) + 1 <= bIA) {
                 sfx.disparo.play();
-                alert("¡LE HAS ENTERRADO!");
+                alert("¡LO HAS ENTERRADO!");
                 dinero += pozo;
                 nivel++;
                 localStorage.setItem('dineroRuleta', dinero);
@@ -308,3 +308,4 @@
 </body>
 
 </html>
+
