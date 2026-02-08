@@ -12,21 +12,45 @@
         * { box-sizing: border-box; }
 
         body { 
-            /* IMAGEN DE FONDO */
             background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('img/fondo.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-color: #000;
-            
             color: #e0e0e0; 
             font-family: 'Courier New', monospace; 
             display: flex; 
             justify-content: center; 
-            align-items: center; 
+            align-items: center; /* Centrado por defecto para PC */
             min-height: 100vh; 
             margin: 0; 
-            overflow: hidden; /* Evita scroll en móviles */
+            overflow: hidden;
+        }
+
+        /* AJUSTE PARA SUBIR EL CONTENIDO EN MÓVIL */
+        @media (max-width: 600px) {
+            body { 
+                align-items: flex-start; /* Cambia de centrado a inicio arriba */
+                padding-top: 15px; /* Pequeño margen para que no toque el borde superior */
+            }
+            
+            #pantalla-juego { 
+                margin-top: 0 !important; 
+                padding: 10px !important;
+            }
+
+            h1 { font-size: 1rem !important; margin: 2px 0 !important; }
+            #pozo-mesa { font-size: 1.1rem !important; margin-bottom: 2px !important; }
+            
+            .duelo-container { margin: 8px 0 !important; gap: 5px !important; }
+            .retrato { width: 90px !important; height: 130px !important; }
+            .ruleta-container { width: 65px !important; height: 65px !important; }
+            
+            .agujero { width: 8px !important; height: 8px !important; margin: -4px !important; }
+            .agujero:nth-child(n) { transform: rotate(calc(60deg * var(--i))) translateY(-22px) !important; }
+            
+            button { padding: 8px 15px !important; font-size: 0.75rem !important; }
+            .controles { margin-top: 5px !important; }
         }
 
         h1 {
@@ -64,28 +88,6 @@
             margin: 15px 0; 
             gap: 10px;
         }
-
-        /* DISEÑO RESPONSIVE PARA MÓVIL */
-        @media (max-width: 600px) {
-            h1 { font-size: 1.1rem; }
-            #pozo-mesa { font-size: 1.2rem !important; }
-            
-            .retrato { 
-                width: 100px !important; 
-                height: 150px !important; 
-            }
-            
-            .ruleta-container { 
-                width: 70px !important; 
-                height: 70px !important;
-            }
-
-            .nombre-tag { font-size: 10px !important; }
-            button { padding: 10px 15px !important; font-size: 0.8rem !important; }
-            
-            .agujero { width: 10px !important; height: 10px !important; margin: -5px !important; }
-            .agujero:nth-child(n) { transform: rotate(calc(60deg * var(--i))) translateY(-25px) !important; }
-        }
         
         .retrato { 
             width: 140px; height: 200px; 
@@ -107,10 +109,10 @@
         .activo { filter: grayscale(0%) brightness(100%); transform: scale(1.05); border-color: var(--oro); box-shadow: 0 0 15px var(--oro); }
 
         #bocadillo {
-            position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
-            background: #fdf5e6; color: #2b1e16; padding: 5px 10px; 
-            border-radius: 5px; font-size: 10px; font-weight: bold; 
-            display: none; z-index: 20; width: 120px; border: 1px solid #d2b48c;
+            position: absolute; top: -35px; left: 50%; transform: translateX(-50%);
+            background: #fdf5e6; color: #2b1e16; padding: 4px 8px; 
+            border-radius: 5px; font-size: 9px; font-weight: bold; 
+            display: none; z-index: 20; width: 100px; border: 1px solid #d2b48c;
         }
 
         .ruleta-container { position: relative; width: 90px; height: 90px; }
@@ -124,7 +126,6 @@
             position: absolute; top: 50%; left: 50%; margin: -7px;
         }
         
-        /* Definición de posiciones con variables CSS para facilitar el escalado */
         .agujero:nth-child(1) { --i: 0; transform: rotate(0deg) translateY(-32px); }
         .agujero:nth-child(2) { --i: 1; transform: rotate(60deg) translateY(-32px); }
         .agujero:nth-child(3) { --i: 2; transform: rotate(120deg) translateY(-32px); }
@@ -145,7 +146,6 @@
             padding: 12px 20px; cursor: pointer; font-family: 'Rye', serif; 
             font-size: 0.9rem; margin-top: 5px;
         }
-        button:active { transform: scale(0.95); }
         button:disabled { background: #333; color: #666; border-color: #555; }
 
         input[type="number"] { padding:8px; width:45px; background:#000; color:var(--oro); border:1px solid var(--oro); font-family: 'Rye'; text-align: center; }
@@ -157,7 +157,6 @@
 
 <div id="overlay">
     <h1>RULETA RUSA</h1>
-    <p style="font-family: 'Rye'; font-size: 0.8rem; color: var(--oro);">EL SALÓN DEL DESTINO</p><br>
     <button onclick="comenzarJuego()">DESENFUNDAR</button>
 </div>
 
@@ -191,7 +190,7 @@
     </div>
 
     <div class="controles">
-        <div style="margin-bottom: 10px;">
+        <div style="margin-bottom: 5px;">
             <label style="font-family:'Rye'; font-size: 0.7rem; color: var(--oro);">BALAS:</label>
             <input type="number" id="input-balas" value="1" min="1" max="5">
         </div>
@@ -232,12 +231,12 @@
     }
 
     function cargarNivel() {
-        if(nivel >= enemigos.length) { alert("¡LEYENDA DEL OESTE!"); localStorage.clear(); location.reload(); return; }
+        if(nivel >= enemigos.length) { alert("¡LEYENDA!"); localStorage.clear(); location.reload(); return; }
         const e = enemigos[nivel];
         document.getElementById("img-enemigo").src = e.i;
         document.getElementById("nombre-enemigo").innerText = e.n;
         document.getElementById("dinero-txt").innerText = dinero;
-        document.getElementById("req-proximo").innerText = `SIGUIENTE: $${enemigos[nivel+1] ? enemigos[nivel+1].r : 'FIN'}`;
+        document.getElementById("req-proximo").innerText = `SIG: $${enemigos[nivel+1] ? enemigos[nivel+1].r : 'FIN'}`;
         
         const b = document.getElementById("bocadillo");
         b.innerText = e.f;
@@ -265,7 +264,7 @@
         animar(() => {
             if (Math.floor(Math.random() * 6) + 1 <= bCount) {
                 sfx.disparo.play();
-                alert("HAS MUERTO.");
+                alert("MUERTO.");
                 localStorage.setItem('dineroRuleta', 1000);
                 localStorage.setItem('nivelRuleta', 0);
                 location.reload();
@@ -286,7 +285,7 @@
         animar(() => {
             if (Math.floor(Math.random() * 6) + 1 <= bIA) {
                 sfx.disparo.play();
-                alert("¡ENEMIGO ABATIDO!");
+                alert("¡ABATIDO!");
                 dinero += pozo; pozo = 0;
                 if (enemigos[nivel + 1] && dinero >= enemigos[nivel + 1].r) nivel++;
                 localStorage.setItem('dineroRuleta', dinero);
