@@ -2,15 +2,23 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ruleta Rusa: Salon del Destino</title>
     <link href="https://fonts.googleapis.com/css2?family=Rye&display=swap" rel="stylesheet">
     
     <style>
-        :root { --oro: #ffd700; --rojo: #ff0000; --fondo: #0a0a0a; }
+        :root { --oro: #ffd700; --rojo: #ff0000; --fondo-oscuro: rgba(10, 10, 10, 0.85); }
         
+        * { box-sizing: border-box; }
+
         body { 
-            background-color: var(--fondo); 
+            /* IMAGEN DE FONDO */
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('img/fondo.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #000;
+            
             color: #e0e0e0; 
             font-family: 'Courier New', monospace; 
             display: flex; 
@@ -18,137 +26,160 @@
             align-items: center; 
             min-height: 100vh; 
             margin: 0; 
+            overflow: hidden; /* Evita scroll en móviles */
         }
 
-        h1, .titulo-oeste {
+        h1 {
             font-family: 'Rye', serif;
             color: var(--oro);
-            text-shadow: 3px 3px 0px #4b3621, 5px 5px 15px #000;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            text-shadow: 2px 2px 0px #4b3621;
+            font-size: 1.4rem;
+            margin: 5px 0;
         }
 
         #overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.95); display: flex; flex-direction: column; 
+            background: rgba(0,0,0,0.9); display: flex; flex-direction: column; 
             justify-content: center; align-items: center; z-index: 100; 
-            text-align: center;
+            text-align: center; padding: 20px;
         }
 
         #pantalla-juego { 
-            width: 90%;
-            max-width: 750px; 
-            padding: 25px; 
-            border: 8px double var(--oro); 
+            width: 95%;
+            max-width: 600px; 
+            padding: 15px; 
+            border: 4px double var(--oro); 
             text-align: center; 
-            background: rgba(18, 18, 18, 0.92); 
+            background: var(--fondo-oscuro); 
             display: none; 
-            box-shadow: 0 0 50px #000;
-            margin: 20px;
+            box-shadow: 0 0 40px #000;
+            backdrop-filter: blur(3px);
         }
 
         .duelo-container { 
             display: flex; 
             flex-direction: row; 
-            justify-content: space-around; 
+            justify-content: space-evenly; 
             align-items: center; 
-            margin: 20px 0; 
-            gap: 15px;
+            margin: 15px 0; 
+            gap: 10px;
         }
 
+        /* DISEÑO RESPONSIVE PARA MÓVIL */
         @media (max-width: 600px) {
-            .duelo-container { flex-direction: column; }
-            #cont-jugador { order: 1; }
-            .ruleta-container { order: 2; margin: 30px 0; }
-            #cont-enemigo { order: 3; }
+            h1 { font-size: 1.1rem; }
+            #pozo-mesa { font-size: 1.2rem !important; }
+            
+            .retrato { 
+                width: 100px !important; 
+                height: 150px !important; 
+            }
+            
+            .ruleta-container { 
+                width: 70px !important; 
+                height: 70px !important;
+            }
+
+            .nombre-tag { font-size: 10px !important; }
+            button { padding: 10px 15px !important; font-size: 0.8rem !important; }
+            
+            .agujero { width: 10px !important; height: 10px !important; margin: -5px !important; }
+            .agujero:nth-child(n) { transform: rotate(calc(60deg * var(--i))) translateY(-25px) !important; }
         }
         
         .retrato { 
-            width: 180px; 
-            height: 270px; 
-            border: 4px solid var(--oro); 
+            width: 140px; height: 200px; 
+            border: 3px solid var(--oro); 
             position: relative; 
-            transition: all 0.5s ease; 
-            overflow: hidden;
+            transition: all 0.4s ease; 
             background: #000;
         }
         .retrato img { width: 100%; height: 100%; object-fit: cover; }
         
         .nombre-tag {
             position: absolute; bottom: 0; width: 100%; 
-            background: rgba(43, 30, 22, 0.9); 
-            color: var(--oro); 
-            padding: 8px 0; font-size: 13px;
+            background: rgba(43, 30, 22, 0.95); 
+            color: var(--oro); padding: 5px 0; font-size: 11px;
             font-family: 'Rye', serif;
         }
 
-        .desactivado { filter: grayscale(100%) brightness(30%); border-color: #555; }
-        .activo { filter: grayscale(0%) brightness(100%); border-color: var(--oro); transform: scale(1.05); box-shadow: 0 0 25px var(--oro); }
+        .desactivado { filter: grayscale(100%) brightness(40%); transform: scale(0.9); border-color: #444; }
+        .activo { filter: grayscale(0%) brightness(100%); transform: scale(1.05); border-color: var(--oro); box-shadow: 0 0 15px var(--oro); }
 
         #bocadillo {
-            position: absolute; top: 10px; right: 10px; background: #fdf5e6; 
-            color: #2b1e16; padding: 12px; border-radius: 5px; font-size: 12px; 
-            font-weight: bold; display: none; z-index: 20; width: 150px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5); border: 1px solid #d2b48c;
+            position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+            background: #fdf5e6; color: #2b1e16; padding: 5px 10px; 
+            border-radius: 5px; font-size: 10px; font-weight: bold; 
+            display: none; z-index: 20; width: 120px; border: 1px solid #d2b48c;
         }
 
-        .ruleta-container { position: relative; width: 110px; height: 110px; }
+        .ruleta-container { position: relative; width: 90px; height: 90px; }
         .tambor { 
             width: 100%; height: 100%; background: #222; border-radius: 50%; 
-            position: relative; border: 5px solid #1a1a1a;
-            transition: transform 1.5s cubic-bezier(0.15, 0, 0.15, 1); 
+            position: relative; border: 3px solid #1a1a1a;
+            transition: transform 1.2s cubic-bezier(0.15, 0, 0.15, 1); 
         }
         .agujero { 
-            width: 18px; height: 18px; background: #000; border-radius: 50%; 
-            position: absolute; top: 46px; left: 46px; 
+            width: 14px; height: 14px; background: #000; border-radius: 50%; 
+            position: absolute; top: 50%; left: 50%; margin: -7px;
         }
-        .agujero.cargado { background: radial-gradient(circle, #ffd700, #b8860b); border: 1px solid #fff; }
+        
+        /* Definición de posiciones con variables CSS para facilitar el escalado */
+        .agujero:nth-child(1) { --i: 0; transform: rotate(0deg) translateY(-32px); }
+        .agujero:nth-child(2) { --i: 1; transform: rotate(60deg) translateY(-32px); }
+        .agujero:nth-child(3) { --i: 2; transform: rotate(120deg) translateY(-32px); }
+        .agujero:nth-child(4) { --i: 3; transform: rotate(180deg) translateY(-32px); }
+        .agujero:nth-child(5) { --i: 4; transform: rotate(240deg) translateY(-32px); }
+        .agujero:nth-child(6) { --i: 5; transform: rotate(300deg) translateY(-32px); }
+
+        .agujero.cargado { background: radial-gradient(circle, #ffd700, #b8860b); border: 1px solid #fff; box-shadow: 0 0 5px var(--oro); }
+        
         .indicador { 
-            position: absolute; top: -15px; left: 50%; transform: translateX(-50%); 
-            border-top: 20px solid var(--rojo); border-left: 10px solid transparent; 
-            border-right: 10px solid transparent; z-index: 10; 
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%); 
+            border-top: 15px solid var(--rojo); border-left: 8px solid transparent; 
+            border-right: 8px solid transparent; z-index: 10; 
         }
 
         button { 
             background: #4b3621; color: var(--oro); border: 2px solid var(--oro); 
-            padding: 15px 30px; cursor: pointer; font-family: 'Rye', serif; 
-            font-size: 1rem; letter-spacing: 1px;
+            padding: 12px 20px; cursor: pointer; font-family: 'Rye', serif; 
+            font-size: 0.9rem; margin-top: 5px;
         }
-        button:hover { background: #5d432c; }
+        button:active { transform: scale(0.95); }
         button:disabled { background: #333; color: #666; border-color: #555; }
 
-        input[type="number"] { padding:10px; width:50px; background:#000; color:var(--oro); border:1px solid var(--oro); font-family: 'Rye'; }
+        input[type="number"] { padding:8px; width:45px; background:#000; color:var(--oro); border:1px solid var(--oro); font-family: 'Rye'; text-align: center; }
         
-        .requisito-texto { font-size: 0.7rem; color: #aaa; margin-top: 5px; }
+        .requisito-texto { font-size: 0.6rem; color: #aaa; margin-bottom: 5px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
 <div id="overlay">
     <h1>RULETA RUSA</h1>
-    <p style="font-family: 'Rye'; font-size: 0.9rem;">EL SALON DEL JUEGO</p><br>
+    <p style="font-family: 'Rye'; font-size: 0.8rem; color: var(--oro);">EL SALÓN DEL DESTINO</p><br>
     <button onclick="comenzarJuego()">DESENFUNDAR</button>
 </div>
 
 <div id="pantalla-juego">
-    <div id="pozo-mesa" class="titulo-oeste" style="font-size: 1.8rem;">POZO: $0</div>
+    <div id="pozo-mesa" style="font-size: 1.5rem; color:var(--oro); font-family:'Rye'; margin-bottom: 5px;">POZO: $0</div>
     <div id="req-proximo" class="requisito-texto"></div>
 
     <div class="duelo-container">
         <div id="cont-jugador" class="retrato activo">
-            <img src="img/jugador.jpg" alt="Jugador">
+            <img src="img/jugador.jpg" alt="Tú">
             <div class="nombre-tag">TÚ: $<span id="dinero-txt">1000</span></div>
         </div>
 
         <div class="ruleta-container">
             <div class="indicador"></div>
             <div id="tambor" class="tambor">
-                <div class="agujero" style="transform: rotate(0deg) translateY(-40px);"></div>
-                <div class="agujero" style="transform: rotate(60deg) translateY(-40px);"></div>
-                <div class="agujero" style="transform: rotate(120deg) translateY(-40px);"></div>
-                <div class="agujero" style="transform: rotate(180deg) translateY(-40px);"></div>
-                <div class="agujero" style="transform: rotate(240deg) translateY(-40px);"></div>
-                <div class="agujero" style="transform: rotate(300deg) translateY(-40px);"></div>
+                <div class="agujero"></div>
+                <div class="agujero"></div>
+                <div class="agujero"></div>
+                <div class="agujero"></div>
+                <div class="agujero"></div>
+                <div class="agujero"></div>
             </div>
         </div>
 
@@ -159,9 +190,11 @@
         </div>
     </div>
 
-    <div class="controles" id="ui-main">
-        <label style="font-family:'Rye'; font-size: 0.8rem;">BALAS:</label>
-        <input type="number" id="input-balas" value="1" min="1" max="5">
+    <div class="controles">
+        <div style="margin-bottom: 10px;">
+            <label style="font-family:'Rye'; font-size: 0.7rem; color: var(--oro);">BALAS:</label>
+            <input type="number" id="input-balas" value="1" min="1" max="5">
+        </div>
         <button id="btn-disparar" onclick="logicaJugador()">¡FUEGO!</button>
     </div>
 </div>
@@ -176,13 +209,12 @@
     const musica = new Audio('sound/musica1.mp3');
     musica.loop = true;
 
-    // "r" es el requisito de dinero para poder enfrentarlo
     const enemigos = [
-        { n: "JACK EL TUERTO", i: "img/enemigo1.jpg", d: 1, f: "¡Este pueblo es pequeño!", r: 0 },
-        { n: "LINDA JACKSON", i: "img/enemigo2.jpg", d: 2, f: "¿Eres rápido, forastero?", r: 2000 },
-        { n: "MIRADA DE MUERTE", i: "img/enemigo3.jpg", d: 3, f: "Tengo un lugar para ti.", r: 5000 },
-        { n: "EL SHERIFF", i: "img/enemigo4.jpg", d: 4, f: "La ley soy yo.", r: 12000 },
-        { n: "EL ENTERRADOR", i: "img/enemigo5.jpg", d: 5, f: "He cavado una fosa con tu nombre.", r: 25000 }
+        { n: "JACK EL TUERTO", i: "img/enemigo1.jpg", d: 1, f: "¡Novato!", r: 0 },
+        { n: "LINDA JACKSON", i: "img/enemigo2.jpg", d: 2, f: "¿Miedo?", r: 2000 },
+        { n: "MIRADA MUERTE", i: "img/enemigo3.jpg", d: 3, f: "Mi turno...", r: 5000 },
+        { n: "EL SHERIFF", i: "img/enemigo4.jpg", d: 4, f: "¡La ley!", r: 12000 },
+        { n: "EL ENTERRADOR", i: "img/enemigo5.jpg", d: 5, f: "Reza.", r: 25000 }
     ];
 
     let nivel = parseInt(localStorage.getItem('nivelRuleta')) || 0;
@@ -191,37 +223,26 @@
     let grados = 0;
 
     function comenzarJuego() {
-        // Verificar si el jugador tiene el dinero suficiente para el nivel guardado
-        if (dinero < enemigos[nivel].r) {
-            alert(`No tienes suficiente dinero ($${enemigos[nivel].r}) para enfrentar a ${enemigos[nivel].n}. ¡Vuelves al inicio!`);
-            nivel = 0;
-            dinero = 1000;
-            localStorage.setItem('nivelRuleta', 0);
-            localStorage.setItem('dineroRuleta', 1000);
-        }
-
+        if (dinero < enemigos[nivel].r) { nivel = 0; dinero = 1000; }
         document.getElementById("overlay").style.display = "none";
         document.getElementById("pantalla-juego").style.display = "block";
-        musica.volume = 0.5;
+        musica.volume = 0.3;
         musica.play().catch(() => {});
         cargarNivel();
     }
 
     function cargarNivel() {
-        if(nivel >= enemigos.length) {
-            alert("¡HAS LIMPIADO EL OESTE! Eres la leyenda más grande.");
-            localStorage.clear(); location.reload(); return;
-        }
+        if(nivel >= enemigos.length) { alert("¡LEYENDA DEL OESTE!"); localStorage.clear(); location.reload(); return; }
         const e = enemigos[nivel];
         document.getElementById("img-enemigo").src = e.i;
         document.getElementById("nombre-enemigo").innerText = e.n;
         document.getElementById("dinero-txt").innerText = dinero;
-        document.getElementById("req-proximo").innerText = `PARA ENFRENTAR AL SIGUIENTE NECESITAS: $${enemigos[nivel+1] ? enemigos[nivel+1].r : 'MÁXIMO'}`;
+        document.getElementById("req-proximo").innerText = `SIGUIENTE: $${enemigos[nivel+1] ? enemigos[nivel+1].r : 'FIN'}`;
         
         const b = document.getElementById("bocadillo");
         b.innerText = e.f;
         b.style.display = "block";
-        setTimeout(() => b.style.display = "none", 3500);
+        setTimeout(() => b.style.display = "none", 2000);
     }
 
     function cambiarTurno(esJugador) {
@@ -231,9 +252,9 @@
 
     function animar(callback) {
         sfx.girar.play();
-        grados += 1080 + (Math.floor(Math.random() * 6) * 60);
+        grados += 720 + (Math.floor(Math.random() * 6) * 60);
         document.getElementById("tambor").style.transform = `rotate(${grados}deg)`;
-        setTimeout(callback, 1600);
+        setTimeout(callback, 1200);
     }
 
     function logicaJugador() {
@@ -244,15 +265,15 @@
         animar(() => {
             if (Math.floor(Math.random() * 6) + 1 <= bCount) {
                 sfx.disparo.play();
-                alert("CAÍSTE EN EL DUELO. Has perdido todo.");
+                alert("HAS MUERTO.");
                 localStorage.setItem('dineroRuleta', 1000);
                 localStorage.setItem('nivelRuleta', 0);
                 location.reload();
             } else {
                 sfx.vacio.play();
-                pozo += bCount * 1000; // Aumenté la recompensa por bala
+                pozo += bCount * 1000;
                 document.getElementById("pozo-mesa").innerText = "POZO: $" + pozo;
-                setTimeout(logicaIA, 1500);
+                setTimeout(logicaIA, 800);
             }
         });
     }
@@ -265,17 +286,9 @@
         animar(() => {
             if (Math.floor(Math.random() * 6) + 1 <= bIA) {
                 sfx.disparo.play();
-                alert("¡LE HAS ENTERRADO!");
-                dinero += pozo;
-                pozo = 0;
-                
-                // Verificar si puede pasar al siguiente enemigo
-                if (enemigos[nivel + 1] && dinero < enemigos[nivel + 1].r) {
-                    alert(`¡Ganaste el duelo! Pero necesitas $${enemigos[nivel+1].r} para el siguiente rival. ¡Sigue apostando contra ${enemigos[nivel].n}!`);
-                } else {
-                    nivel++;
-                }
-
+                alert("¡ENEMIGO ABATIDO!");
+                dinero += pozo; pozo = 0;
+                if (enemigos[nivel + 1] && dinero >= enemigos[nivel + 1].r) nivel++;
                 localStorage.setItem('dineroRuleta', dinero);
                 localStorage.setItem('nivelRuleta', nivel);
                 location.reload();
