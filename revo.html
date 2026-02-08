@@ -8,6 +8,10 @@
         :root { --oro: #ffd700; --rojo: #ff0000; --fondo: #0a0a0a; }
         
         body { 
+            background-image: url('img/fondo.jpg'); /* Imagen de fondo añadida */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             background-color: var(--fondo); 
             color: #e0e0e0; 
             font-family: 'Courier New', monospace; 
@@ -25,21 +29,52 @@
             justify-content: center; align-items: center; z-index: 100; 
         }
 
+        /* Rectángulo de juego con borde dorado */
         #pantalla-juego { 
-            width: 750px; padding: 25px; border: 4px double #444; 
-            text-align: center; background: #121212; display: none; 
+            width: 90%;
+            max-width: 750px; 
+            padding: 25px; 
+            border: 5px solid var(--oro); /* Borde dorado */
+            text-align: center; 
+            background: rgba(18, 18, 18, 0.9); /* Un poco transparente para ver el fondo */
+            display: none; 
             box-shadow: 0 0 50px #000;
+            margin: 20px;
         }
 
+        /* Adaptabilidad para móvil (Vertical) */
         .duelo-container { 
-            display: flex; justify-content: space-around; 
-            align-items: center; margin: 20px 0; 
+            display: flex; 
+            flex-direction: row; /* Horizontal en PC */
+            justify-content: space-around; 
+            align-items: center; 
+            margin: 20px 0; 
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .duelo-container {
+                flex-direction: column; /* Vertical en Móvil */
+            }
+            #pantalla-juego {
+                width: 95%;
+                padding: 15px;
+            }
+            /* Orden específico solicitado: Jugador -> Revolver -> Enemigo */
+            #cont-jugador { order: 1; }
+            .ruleta-container { order: 2; margin: 20px 0; }
+            #cont-enemigo { order: 3; }
         }
         
-        /* Retratos 200x300 */
+        /* Retratos 200x300 con borde dorado */
         .retrato { 
-            width: 200px; height: 300px; border: 3px solid #333; 
-            position: relative; transition: all 0.5s ease; overflow: hidden;
+            width: 180px; 
+            height: 270px; 
+            border: 3px solid var(--oro); /* Borde dorado */
+            position: relative; 
+            transition: all 0.5s ease; 
+            overflow: hidden;
+            background: #000;
         }
         .retrato img { width: 100%; height: 100%; object-fit: cover; }
         
@@ -49,59 +84,60 @@
             padding: 5px 0; font-size: 12px;
         }
 
-        .desactivado { filter: grayscale(100%) brightness(30%); transform: scale(0.95); }
-        .activo { filter: grayscale(0%) brightness(100%); border-color: var(--oro); transform: scale(1.05); }
+        .desactivado { filter: grayscale(100%) brightness(30%); transform: scale(0.95); border-color: #444; }
+        .activo { filter: grayscale(0%) brightness(100%); border-color: var(--oro); transform: scale(1.05); box-shadow: 0 0 15px var(--oro); }
 
         /* Globo de Diálogo */
         #bocadillo {
             position: absolute; top: 10px; right: 10px; background: white; 
             color: black; padding: 10px; border-radius: 5px; font-size: 11px; 
-            font-weight: bold; display: none; z-index: 20; width: 160px;
+            font-weight: bold; display: none; z-index: 20; width: 140px;
             box-shadow: 0 0 10px var(--oro);
         }
 
         /* Ruleta */
-        .ruleta-container { position: relative; width: 120px; height: 120px; }
+        .ruleta-container { position: relative; width: 100px; height: 100px; }
         .tambor { 
             width: 100%; height: 100%; background: #222; border-radius: 50%; 
             position: relative; border: 4px solid #111;
             transition: transform 1.5s cubic-bezier(0.15, 0, 0.15, 1); 
         }
         .agujero { 
-            width: 20px; height: 20px; background: #000; border-radius: 50%; 
-            position: absolute; top: 50px; left: 50px; 
+            width: 16px; height: 16px; background: #000; border-radius: 50%; 
+            position: absolute; top: 42px; left: 42px; 
         }
         .agujero.cargado { background: radial-gradient(circle, #ffd700, #b8860b); border: 1px solid #fff; }
         .indicador { 
-            position: absolute; top: -15px; left: 50%; transform: translateX(-50%); 
-            border-top: 20px solid var(--rojo); border-left: 10px solid transparent; 
-            border-right: 10px solid transparent; z-index: 10; 
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%); 
+            border-top: 15px solid var(--rojo); border-left: 8px solid transparent; 
+            border-right: 8px solid transparent; z-index: 10; 
         }
 
         /* Controles */
         .controles { margin-top: 20px; }
         button { 
             background: var(--rojo); color: white; border: none; 
-            padding: 15px 30px; cursor: pointer; font-family: 'Courier New'; 
-            font-weight: bold; letter-spacing: 2px;
+            padding: 15px 25px; cursor: pointer; font-family: 'Courier New'; 
+            font-weight: bold; letter-spacing: 1px;
+            border: 1px solid white;
         }
         button:hover { background: #ff4444; }
-        button:disabled { background: #333; cursor: not-allowed; }
+        button:disabled { background: #333; cursor: not-allowed; border-color: #555; }
 
-        .vol-cont { margin-top: 25px; border-top: 1px solid #333; padding-top: 15px; }
-        input[type="range"] { accent-color: var(--rojo); width: 200px; }
+        .vol-cont { margin-top: 25px; border-top: 1px solid #444; padding-top: 15px; }
+        input[type="range"] { accent-color: var(--rojo); width: 150px; }
     </style>
 </head>
 <body>
 
 <div id="overlay">
-    <h1 style="color: var(--oro); font-size: 3rem;">RULETA RUSA</h1>
+    <h1 style="color: var(--oro); font-size: 2.5rem; text-align: center;">RULETA RUSA</h1>
     <p>¿Tienes el valor suficiente?</p><br>
     <button onclick="comenzarJuego()">ENTRAR AL CASINO</button>
 </div>
 
 <div id="pantalla-juego">
-    <div id="pozo-mesa" style="color: var(--oro); font-size: 1.8rem; text-shadow: 2px 2px #000;">POZO: $0</div>
+    <div id="pozo-mesa" style="color: var(--oro); font-size: 1.5rem; text-shadow: 2px 2px #000;">POZO: $0</div>
 
     <div class="duelo-container">
         <div id="cont-jugador" class="retrato activo">
@@ -112,12 +148,12 @@
         <div class="ruleta-container">
             <div class="indicador"></div>
             <div id="tambor" class="tambor">
-                <div class="agujero" style="transform: rotate(0deg) translateY(-40px);"></div>
-                <div class="agujero" style="transform: rotate(60deg) translateY(-40px);"></div>
-                <div class="agujero" style="transform: rotate(120deg) translateY(-40px);"></div>
-                <div class="agujero" style="transform: rotate(180deg) translateY(-40px);"></div>
-                <div class="agujero" style="transform: rotate(240deg) translateY(-40px);"></div>
-                <div class="agujero" style="transform: rotate(300deg) translateY(-40px);"></div>
+                <div class="agujero" style="transform: rotate(0deg) translateY(-35px);"></div>
+                <div class="agujero" style="transform: rotate(60deg) translateY(-35px);"></div>
+                <div class="agujero" style="transform: rotate(120deg) translateY(-35px);"></div>
+                <div class="agujero" style="transform: rotate(180deg) translateY(-35px);"></div>
+                <div class="agujero" style="transform: rotate(240deg) translateY(-35px);"></div>
+                <div class="agujero" style="transform: rotate(300deg) translateY(-35px);"></div>
             </div>
         </div>
 
@@ -130,12 +166,12 @@
 
     <div class="controles" id="ui-main">
         <label>BALAS:</label>
-        <input type="number" id="input-balas" value="1" min="1" max="5" style="padding:10px; width:50px; background:#000; color:var(--oro); border:1px solid #444;">
-        <button id="btn-disparar" onclick="logicaJugador()">APRETAR GATILLO</button>
+        <input type="number" id="input-balas" value="1" min="1" max="5" style="padding:10px; width:50px; background:#000; color:var(--oro); border:1px solid var(--oro);">
+        <button id="btn-disparar" onclick="logicaJugador()">GATILLO</button>
     </div>
 
     <div class="vol-cont">
-        <span style="font-size: 10px; color: #888;">VOLUMEN MAESTRO</span><br>
+        <span style="font-size: 10px; color: #888;">VOLUMEN</span><br>
         <input type="range" id="vol-slider" min="0" max="1" step="0.1" value="0.5">
     </div>
 </div>
@@ -151,7 +187,6 @@
     const musica = new Audio('sound/musica1.mp3');
     musica.loop = true;
 
-    // --- DATOS ---
     const enemigos = [
         { n: "EL NOVATO", i: "img/enemigo1.jpg", d: 1, f: "He visto a muchos como tú caer..." },
         { n: "EL TAHÚR", i: "img/enemigo2.jpg", d: 2, f: "La suerte es para los débiles." },
@@ -164,7 +199,6 @@
     let pozo = 0;
     let grados = 0;
 
-    // --- FUNCIONES ---
     function comenzarJuego() {
         document.getElementById("overlay").style.display = "none";
         document.getElementById("pantalla-juego").style.display = "block";
@@ -177,7 +211,7 @@
 
     function cargarNivel() {
         if(nivel >= enemigos.length) {
-            alert("¡HAS LIMPIADO EL CASINO! Eres el Rey.");
+            alert("¡HAS GANADO EL TORNEO!");
             localStorage.clear(); location.reload(); return;
         }
         const e = enemigos[nivel];
@@ -192,8 +226,10 @@
     }
 
     function cambiarTurno(esJugador) {
-        document.getElementById("cont-jugador").className = esJugador ? "retrato activo" : "retrato desactivado";
-        document.getElementById("cont-enemigo").className = esJugador ? "retrato desactivado" : "retrato activo";
+        document.getElementById("cont-jugador").classList.toggle("activo", esJugador);
+        document.getElementById("cont-jugador").classList.toggle("desactivado", !esJugador);
+        document.getElementById("cont-enemigo").classList.toggle("activo", !esJugador);
+        document.getElementById("cont-enemigo").classList.toggle("desactivado", esJugador);
     }
 
     function animar(callback) {
@@ -211,7 +247,7 @@
         animar(() => {
             if (Math.floor(Math.random() * 6) + 1 <= bCount) {
                 sfx.disparo.play();
-                alert("BOOM. Perdiste todo.");
+                alert("HAS MUERTO.");
                 localStorage.setItem('dineroRuleta', 1000);
                 localStorage.setItem('nivelRuleta', 0);
                 location.reload();
@@ -226,15 +262,13 @@
 
     function logicaIA() {
         cambiarTurno(false);
-        const bIA = Math.min(5, enemigos[nivel].d) + (Math.random() > 0.7 ? 1 : 0);
-        
-        // Visual de balas IA
+        const bIA = Math.min(5, enemigos[nivel].d);
         document.querySelectorAll(".agujero").forEach((a, i) => a.classList.toggle("cargado", i < bIA));
 
         animar(() => {
             if (Math.floor(Math.random() * 6) + 1 <= bIA) {
                 sfx.disparo.play();
-                alert("¡El enemigo ha caído!");
+                alert("¡EL ENEMIGO HA CAÍDO!");
                 dinero += pozo;
                 nivel++;
                 localStorage.setItem('dineroRuleta', dinero);
@@ -246,14 +280,12 @@
                 document.getElementById("pozo-mesa").innerText = "POZO: $" + pozo;
                 cambiarTurno(true);
                 document.getElementById("btn-disparar").disabled = false;
-                // Reset visual balas
-                const bCount = parseInt(document.getElementById("input-balas").value);
-                document.querySelectorAll(".agujero").forEach((a, i) => a.classList.toggle("cargado", i < bCount));
+                const c = document.getElementById("input-balas").value;
+                document.querySelectorAll(".agujero").forEach((a, i) => a.classList.toggle("cargado", i < c));
             }
         });
     }
 
-    // --- LISTENERS ---
     document.getElementById("vol-slider").addEventListener("input", (e) => {
         const v = e.target.value;
         musica.volume = v;
