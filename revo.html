@@ -29,17 +29,18 @@
         }
 
         /* EFECTO DE DESTELLO ROJO */
-        .flash-rojo {
-            animation: flashAnim 0.4s forwards;
-        }
+        .flash-rojo { animation: flashAnim 0.4s forwards; }
         @keyframes flashAnim {
             0% { background-color: rgba(255, 0, 0, 0.8); }
             100% { background-color: transparent; }
         }
 
-        /* AJUSTE PARA MÓVIL (SUBIR CONTENIDO) */
+        /* AJUSTE PARA MÓVIL (SUBIR CONTENIDO Y SEPARAR DEL TOP) */
         @media (max-width: 600px) {
-            body { align-items: flex-start; padding-top: 40px; }
+            body { 
+                align-items: flex-start; 
+                padding-top: 20px; /* <--- AJUSTA ESTO PARA BAJARLO MÁS DEL BORDE SUPERIOR */
+            }
             #pantalla-juego { margin-top: 0 !important; padding: 10px !important; }
             h1 { font-size: 1.1rem !important; margin: 2px 0 !important; }
             #pozo-mesa { font-size: 1.2rem !important; }
@@ -48,9 +49,10 @@
             .agujero { width: 10px !important; height: 10px !important; margin: -5px !important; }
             .agujero:nth-child(n) { transform: rotate(calc(60deg * var(--i))) translateY(-25px) !important; }
             button { padding: 10px 15px !important; font-size: 0.8rem !important; }
+            .requisito-texto { font-size: 0.55rem !important; }
         }
 
-        h1 { font-family: 'Rye', serif; color: var(--oro); text-shadow: 2px 2px 0px #4b3621; text-align: center; }
+        h1 { font-family: 'Rye', serif; color: var(--oro); text-shadow: 2px 2px 0px #4b3621; text-align: center; margin: 5px 0; }
 
         #overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -66,7 +68,7 @@
 
         .duelo-container { display: flex; justify-content: space-evenly; align-items: center; margin: 15px 0; }
         
-        .retrato { width: 140px; height: 200px; border: 3px solid var(--oro); position: relative; background: #000; }
+        .retrato { width: 140px; height: 200px; border: 3px solid var(--oro); position: relative; background: #000; transition: 0.3s; }
         .retrato img { width: 100%; height: 100%; object-fit: cover; }
         
         .nombre-tag {
@@ -74,7 +76,7 @@
             color: var(--oro); padding: 5px 0; font-size: 11px; font-family: 'Rye', serif;
         }
 
-        .desactivado { filter: grayscale(100%) brightness(40%); transform: scale(0.9); }
+        .desactivado { filter: grayscale(100%) brightness(40%); transform: scale(0.9); border-color: #444; }
         .activo { filter: grayscale(0%) brightness(100%); transform: scale(1.05); border-color: var(--oro); box-shadow: 0 0 15px var(--oro); }
 
         .ruleta-container { position: relative; width: 90px; height: 90px; }
@@ -88,7 +90,6 @@
             position: absolute; top: 50%; left: 50%; margin: -7px;
         }
         
-        /* Posiciones */
         .agujero:nth-child(1) { --i: 0; transform: rotate(0deg) translateY(-32px); }
         .agujero:nth-child(2) { --i: 1; transform: rotate(60deg) translateY(-32px); }
         .agujero:nth-child(3) { --i: 2; transform: rotate(120deg) translateY(-32px); }
@@ -110,6 +111,7 @@
         }
         button:disabled { background: #333; color: #666; border-color: #555; }
         input[type="number"] { padding:8px; width:50px; background:#000; color:var(--oro); border:1px solid var(--oro); font-family: 'Rye'; text-align: center; }
+        .requisito-texto { font-size: 0.65rem; color: #aaa; margin-top: 5px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -121,7 +123,8 @@
 
 <div id="pantalla-juego">
     <div id="pozo-mesa" style="font-size: 1.5rem; color:var(--oro); font-family:'Rye';">POZO: $0</div>
-    
+    <div id="req-proximo" class="requisito-texto"></div>
+
     <div class="duelo-container">
         <div id="cont-jugador" class="retrato activo">
             <img src="img/jugador.jpg" alt="Tú">
@@ -160,7 +163,7 @@
     musica.loop = true;
 
     const enemigos = [
-        { n: "JACK EL TUERTO", i: "img/enemigo1.jpg", d: 1, r: 0 },
+        { n: "JACK EL RAPIDO", i: "img/enemigo1.jpg", d: 1, r: 0 },
         { n: "LINDA JACKSON", i: "img/enemigo2.jpg", d: 2, r: 2000 },
         { n: "MIRADA MUERTE", i: "img/enemigo3.jpg", d: 3, r: 5000 },
         { n: "EL SHERIFF", i: "img/enemigo4.jpg", d: 4, r: 12000 },
@@ -168,7 +171,7 @@
     ];
 
     let nivel = parseInt(localStorage.getItem('nivelRuleta')) || 0;
-    let dinero = parseInt(localStorage.getItem('dineroRuleta')) || 1000;
+    let dinero = parseInt(localStorage.getItem('dineroRuleta')) || 0;
     let pozo = 0;
     let gradosActuales = 0;
 
@@ -187,6 +190,7 @@
         document.getElementById("img-enemigo").src = e.i;
         document.getElementById("nombre-enemigo").innerText = e.n;
         document.getElementById("dinero-txt").innerText = dinero;
+        document.getElementById("req-proximo").innerText = `PARA EL SIGUIENTE: $${enemigos[nivel+1] ? enemigos[nivel+1].r : 'MÁXIMO'}`;
         actualizarBalasVisuales(parseInt(document.getElementById("input-balas").value));
     }
 
@@ -198,14 +202,8 @@
 
     function animarTambor(resultadoFinal, callback) {
         sfx.girar.play();
-        // Cada agujero son 60 grados. El agujero 1 está en 0deg.
-        // Para que el agujero 'resultadoFinal' quede arriba, giramos -(60 * (resultadoFinal-1))
         const gradosDestino = -(60 * (resultadoFinal - 1));
-        
-        // Sumamos 1080 (3 vueltas) para el efecto visual + el destino
-        // Restamos el exceso de los grados actuales para que el giro sea fluido
         gradosActuales += 1080 + (gradosDestino - (gradosActuales % 360));
-        
         document.getElementById("tambor").style.transform = `rotate(${gradosActuales}deg)`;
         setTimeout(callback, 1250);
     }
@@ -219,7 +217,6 @@
         const bCount = parseInt(document.getElementById("input-balas").value);
         document.getElementById("btn-disparar").disabled = true;
         
-        // Decidimos resultado (1 al 6)
         const resultado = Math.floor(Math.random() * 6) + 1;
         const esBala = resultado <= bCount;
 
@@ -257,8 +254,19 @@
                 dispararFlash();
                 setTimeout(() => {
                     alert("¡ENEMIGO ABATIDO!");
-                    dinero += pozo; pozo = 0;
-                    if (enemigos[nivel + 1] && dinero >= enemigos[nivel + 1].r) nivel++;
+                    dinero += pozo;
+                    pozo = 0;
+                    
+                    // REQUISITO DE DINERO PARA SUBIR NIVEL
+                    if (enemigos[nivel + 1]) {
+                        if (dinero >= enemigos[nivel + 1].r) {
+                            nivel++;
+                            alert(`¡Has avanzado! Ahora enfrentas a ${enemigos[nivel].n}`);
+                        } else {
+                            alert(`Has ganado el duelo, pero necesitas $${enemigos[nivel+1].r} para enfrentar al siguiente. ¡Sigue apostando!`);
+                        }
+                    }
+
                     localStorage.setItem('dineroRuleta', dinero);
                     localStorage.setItem('nivelRuleta', nivel);
                     location.reload();
@@ -270,7 +278,6 @@
                 document.getElementById("cont-enemigo").classList.remove("activo");
                 document.getElementById("cont-jugador").classList.add("activo");
                 document.getElementById("btn-disparar").disabled = false;
-                // Devolvemos las balas visuales a las del jugador para su turno
                 actualizarBalasVisuales(parseInt(document.getElementById("input-balas").value));
             }
         });
