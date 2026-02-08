@@ -176,7 +176,7 @@
     let gradosActuales = 0;
 
     function comenzarJuego() {
-        if (dinero < enemigos[nivel].r) { nivel = 0; dinero = 1000; }
+        if (dinero < enemigos[nivel].r) { nivel = 0; dinero = 0; }
         document.getElementById("overlay").style.display = "none";
         document.getElementById("pantalla-juego").style.display = "block";
         musica.volume = 0.3;
