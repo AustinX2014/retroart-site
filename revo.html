@@ -10,10 +10,6 @@
         :root { --oro: #ffd700; --rojo: #ff0000; --fondo: #0a0a0a; }
         
         body { 
-            background-image: url('img/fondo.jpg'); 
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
             background-color: var(--fondo); 
             color: #e0e0e0; 
             font-family: 'Courier New', monospace; 
@@ -24,7 +20,6 @@
             margin: 0; 
         }
 
-        /* Títulos estilo Oeste */
         h1, .titulo-oeste {
             font-family: 'Rye', serif;
             color: var(--oro);
@@ -33,7 +28,6 @@
             text-transform: uppercase;
         }
 
-        /* Pantalla de Inicio */
         #overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.95); display: flex; flex-direction: column; 
@@ -41,12 +35,11 @@
             text-align: center;
         }
 
-        /* Rectángulo de juego con borde dorado */
         #pantalla-juego { 
             width: 90%;
             max-width: 750px; 
             padding: 25px; 
-            border: 8px double var(--oro); /* Borde estilo marco antiguo */
+            border: 8px double var(--oro); 
             text-align: center; 
             background: rgba(18, 18, 18, 0.92); 
             display: none; 
@@ -54,7 +47,6 @@
             margin: 20px;
         }
 
-        /* Adaptabilidad para móvil (Vertical) */
         .duelo-container { 
             display: flex; 
             flex-direction: row; 
@@ -71,7 +63,6 @@
             #cont-enemigo { order: 3; }
         }
         
-        /* Retratos 200x300 con borde dorado */
         .retrato { 
             width: 180px; 
             height: 270px; 
@@ -80,13 +71,12 @@
             transition: all 0.5s ease; 
             overflow: hidden;
             background: #000;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
         .retrato img { width: 100%; height: 100%; object-fit: cover; }
         
         .nombre-tag {
             position: absolute; bottom: 0; width: 100%; 
-            background: rgba(43, 30, 22, 0.9); /* Color madera oscura */
+            background: rgba(43, 30, 22, 0.9); 
             color: var(--oro); 
             padding: 8px 0; font-size: 13px;
             font-family: 'Rye', serif;
@@ -95,7 +85,6 @@
         .desactivado { filter: grayscale(100%) brightness(30%); border-color: #555; }
         .activo { filter: grayscale(0%) brightness(100%); border-color: var(--oro); transform: scale(1.05); box-shadow: 0 0 25px var(--oro); }
 
-        /* Globo de Diálogo */
         #bocadillo {
             position: absolute; top: 10px; right: 10px; background: #fdf5e6; 
             color: #2b1e16; padding: 12px; border-radius: 5px; font-size: 12px; 
@@ -103,7 +92,6 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.5); border: 1px solid #d2b48c;
         }
 
-        /* Ruleta */
         .ruleta-container { position: relative; width: 110px; height: 110px; }
         .tambor { 
             width: 100%; height: 100%; background: #222; border-radius: 50%; 
@@ -121,21 +109,17 @@
             border-right: 10px solid transparent; z-index: 10; 
         }
 
-        /* Controles */
         button { 
             background: #4b3621; color: var(--oro); border: 2px solid var(--oro); 
             padding: 15px 30px; cursor: pointer; font-family: 'Rye', serif; 
             font-size: 1rem; letter-spacing: 1px;
-            box-shadow: 0 4px 0 #2b1e16;
         }
-        button:hover { background: #5d432c; transform: translateY(-2px); }
-        button:active { transform: translateY(2px); box-shadow: none; }
+        button:hover { background: #5d432c; }
         button:disabled { background: #333; color: #666; border-color: #555; }
 
         input[type="number"] { padding:10px; width:50px; background:#000; color:var(--oro); border:1px solid var(--oro); font-family: 'Rye'; }
         
-        .vol-cont { margin-top: 25px; border-top: 1px solid #444; padding-top: 15px; }
-        input[type="range"] { accent-color: var(--oro); width: 150px; }
+        .requisito-texto { font-size: 0.7rem; color: #aaa; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -148,6 +132,7 @@
 
 <div id="pantalla-juego">
     <div id="pozo-mesa" class="titulo-oeste" style="font-size: 1.8rem;">POZO: $0</div>
+    <div id="req-proximo" class="requisito-texto"></div>
 
     <div class="duelo-container">
         <div id="cont-jugador" class="retrato activo">
@@ -179,11 +164,6 @@
         <input type="number" id="input-balas" value="1" min="1" max="5">
         <button id="btn-disparar" onclick="logicaJugador()">¡FUEGO!</button>
     </div>
-
-    <div class="vol-cont">
-        <span style="font-size: 10px; color: #888; font-family:'Rye'">VOLUMEN</span><br>
-        <input type="range" id="vol-slider" min="0" max="1" step="0.1" value="0.5">
-    </div>
 </div>
 
 <script>
@@ -196,11 +176,13 @@
     const musica = new Audio('sound/musica1.mp3');
     musica.loop = true;
 
+    // "r" es el requisito de dinero para poder enfrentarlo
     const enemigos = [
-        { n: "JACK EL RAPIDO", i: "img/enemigo1.jpg", d: 1, f: "¡Este pueblo es pequeño para los dos!" },
-        { n: "LINDA JACKSON", i: "img/enemigo2.jpg", d: 2, f: "¿Eres rápido, o solo ruidoso?" },
-        { n: "MIRADA DE MUERTE", i: "img/enemigo3.jpg", d: 3, f: "Tengo un lugar para ti en el cementerio." },
-        { n: "EL SHERIFF", i: "img/enemigo4.jpg", d: 5, f: "La ley termina en la punta de mi bala." }
+        { n: "JACK EL TUERTO", i: "img/enemigo1.jpg", d: 1, f: "¡Este pueblo es pequeño!", r: 0 },
+        { n: "LINDA JACKSON", i: "img/enemigo2.jpg", d: 2, f: "¿Eres rápido, forastero?", r: 2000 },
+        { n: "MIRADA DE MUERTE", i: "img/enemigo3.jpg", d: 3, f: "Tengo un lugar para ti.", r: 5000 },
+        { n: "EL SHERIFF", i: "img/enemigo4.jpg", d: 4, f: "La ley soy yo.", r: 12000 },
+        { n: "EL ENTERRADOR", i: "img/enemigo5.jpg", d: 5, f: "He cavado una fosa con tu nombre.", r: 25000 }
     ];
 
     let nivel = parseInt(localStorage.getItem('nivelRuleta')) || 0;
@@ -209,12 +191,19 @@
     let grados = 0;
 
     function comenzarJuego() {
+        // Verificar si el jugador tiene el dinero suficiente para el nivel guardado
+        if (dinero < enemigos[nivel].r) {
+            alert(`No tienes suficiente dinero ($${enemigos[nivel].r}) para enfrentar a ${enemigos[nivel].n}. ¡Vuelves al inicio!`);
+            nivel = 0;
+            dinero = 1000;
+            localStorage.setItem('nivelRuleta', 0);
+            localStorage.setItem('dineroRuleta', 1000);
+        }
+
         document.getElementById("overlay").style.display = "none";
         document.getElementById("pantalla-juego").style.display = "block";
         musica.volume = 0.5;
-        musica.play().catch(() => {
-            window.addEventListener('click', () => musica.play(), {once:true});
-        });
+        musica.play().catch(() => {});
         cargarNivel();
     }
 
@@ -227,6 +216,7 @@
         document.getElementById("img-enemigo").src = e.i;
         document.getElementById("nombre-enemigo").innerText = e.n;
         document.getElementById("dinero-txt").innerText = dinero;
+        document.getElementById("req-proximo").innerText = `PARA ENFRENTAR AL SIGUIENTE NECESITAS: $${enemigos[nivel+1] ? enemigos[nivel+1].r : 'MÁXIMO'}`;
         
         const b = document.getElementById("bocadillo");
         b.innerText = e.f;
@@ -247,20 +237,20 @@
     }
 
     function logicaJugador() {
-        cambiarTurno(true);
         const bCount = parseInt(document.getElementById("input-balas").value);
         document.getElementById("btn-disparar").disabled = true;
+        cambiarTurno(true);
 
         animar(() => {
             if (Math.floor(Math.random() * 6) + 1 <= bCount) {
                 sfx.disparo.play();
-                alert("CAÍSTE EN EL DUELO.");
+                alert("CAÍSTE EN EL DUELO. Has perdido todo.");
                 localStorage.setItem('dineroRuleta', 1000);
                 localStorage.setItem('nivelRuleta', 0);
                 location.reload();
             } else {
                 sfx.vacio.play();
-                pozo += bCount * 500;
+                pozo += bCount * 1000; // Aumenté la recompensa por bala
                 document.getElementById("pozo-mesa").innerText = "POZO: $" + pozo;
                 setTimeout(logicaIA, 1500);
             }
@@ -269,15 +259,23 @@
 
     function logicaIA() {
         cambiarTurno(false);
-        const bIA = Math.min(5, enemigos[nivel].d);
+        const bIA = enemigos[nivel].d;
         document.querySelectorAll(".agujero").forEach((a, i) => a.classList.toggle("cargado", i < bIA));
 
         animar(() => {
             if (Math.floor(Math.random() * 6) + 1 <= bIA) {
                 sfx.disparo.play();
-                alert("¡LO HAS ENTERRADO!");
+                alert("¡LE HAS ENTERRADO!");
                 dinero += pozo;
-                nivel++;
+                pozo = 0;
+                
+                // Verificar si puede pasar al siguiente enemigo
+                if (enemigos[nivel + 1] && dinero < enemigos[nivel + 1].r) {
+                    alert(`¡Ganaste el duelo! Pero necesitas $${enemigos[nivel+1].r} para el siguiente rival. ¡Sigue apostando contra ${enemigos[nivel].n}!`);
+                } else {
+                    nivel++;
+                }
+
                 localStorage.setItem('dineroRuleta', dinero);
                 localStorage.setItem('nivelRuleta', nivel);
                 location.reload();
@@ -287,17 +285,9 @@
                 document.getElementById("pozo-mesa").innerText = "POZO: $" + pozo;
                 cambiarTurno(true);
                 document.getElementById("btn-disparar").disabled = false;
-                const c = document.getElementById("input-balas").value;
-                document.querySelectorAll(".agujero").forEach((a, i) => a.classList.toggle("cargado", i < c));
             }
         });
     }
-
-    document.getElementById("vol-slider").addEventListener("input", (e) => {
-        const v = e.target.value;
-        musica.volume = v;
-        Object.values(sfx).forEach(s => s.volume = v);
-    });
 
     document.getElementById("input-balas").addEventListener("input", (e) => {
         sfx.click.play();
@@ -306,6 +296,4 @@
     });
 </script>
 </body>
-
 </html>
-
