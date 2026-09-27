@@ -1,8 +1,0 @@
-{
-  "serverName": "ATHILA",
-  "officialFaction": "elyos",
-  "players": [
-    { "nick": "Ares", "class": "Gladiador / Templario", "rank": "Veterano AION", "msg": "Tanque principal para Raids" },
-    { "nick": "Luna", "class": "Clérigo / Canto", "rank": "Experiencia en MMOs", "msg": "Main Healer" }
-  ]
-}
