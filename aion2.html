@@ -419,7 +419,7 @@
 					</div>
 				</div>
 
-				<div class="overflow-x-auto">
+								<div class="overflow-x-auto">
 					<table class="w-full text-left text-xs font-orbitron">
 						<thead class="text-[10px] uppercase bg-astral-950/80 text-epicBlue-300 border-b border-mystic-500/40">
 							<tr>
@@ -429,30 +429,48 @@
 							</tr>
 						</thead>
 						<tbody id="playerList" class="divide-y divide-mystic-500/20">
-							<!-- Jugador 1 -->
-							<tr class="hover:bg-astral-900/40 transition-colors">
-								<td class="p-3.5 font-bold text-white flex items-center gap-2">
-									<i class="fa-solid fa-crown text-amber-400 text-xs"></i> AustinX
-								</td>
-								<td class="p-3.5 text-epicBlue-300">Ranger</td>
-								<td class="p-3.5 text-slate-300">Veterano </td>
-							</tr>
-							<!-- Jugador 2 -->
-							<tr class="hover:bg-astral-900/40 transition-colors">
-								<td class="p-3.5 font-bold text-white">Yesi</td>
-								<td class="p-3.5 text-epicBlue-300">Clérigo</td>
-								<td class="p-3.5 text-slate-300">Experiencia en MMOs</td>
-							</tr>
-							<!-- Jugador 3 -->
-							<tr class="hover:bg-astral-900/40 transition-colors">
-								<td class="p-3.5 font-bold text-white">Javi</td>
-								<td class="p-3.5 text-epicBlue-300">Invocador</td>
-								<td class="p-3.5 text-slate-300">Veterano Classic</td>
-							</tr>
+							<!-- Se rellenará automáticamente desde jugadores.json -->
 						</tbody>
 					</table>
 				</div>
-			</div>
+
+				<script>
+					// Lista de profesiones válidas para verificación
+					const PROFESIONES_VALIDAS = [
+					"Gladiator", "Templar", "Assassin", "Ranger",
+					"Sorcerer", "Spirit Master", "Cleric", "Chanter"
+					];
+
+					fetch('jugadores.json')
+					.then(response => {
+					if (!response.ok) throw new Error("No se pudo cargar el archivo jugadores.json");
+					return response.json();
+					})
+					.then(jugadores => {
+					const tbody = document.getElementById('playerList');
+
+					tbody.innerHTML = jugadores.map(jugador => {
+					// Si por error se escribe una profesión no válida, usará la escrita o un aviso
+					const claseValida = PROFESIONES_VALIDAS.includes(jugador.clase)
+					? jugador.clase
+					: `${jugador.clase} (No válida)`;
+
+					return `
+					<tr class="hover:bg-astral-900/40 transition-colors">
+						<td class="p-3.5 font-bold text-white flex items-center gap-2">
+							${jugador.lider ? '<i class="fa-solid fa-crown text-amber-400 text-xs"></i>' : ''}
+							${jugador.nick}
+						</td>
+						<td class="p-3.5 text-epicBlue-300">${claseValida}</td>
+						<td class="p-3.5 text-slate-300">${jugador.experiencia}</td>
+					</tr>
+					`;
+					}).join('');
+					})
+					.catch(error => {
+					console.error("Error al cargar la lista de jugadores:", error);
+					});
+				</script>
 		</section>
 
 		<!-- FOOTER -->
