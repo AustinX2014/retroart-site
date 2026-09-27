@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title id="page-title">Clan HEROES - AION 2 |EU</title>
+				<title id="page-title">Clan HEROES - AION 2 | Servidor ATHILA EU</title>
 
 				<!-- Google Fonts: Medieval & Fantasy Typography -->
 				<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -232,8 +232,8 @@
 						<i class="fa-solid fa-shield-halved"></i> Bando Oficial del Clan:
 					</label>
 					<div class="flex gap-2">
-						<button onclick="setOfficialFaction('elyos')" class="w-1/2 py-2 rounded-xl font-bold text-xs bg-amber-500 text-black hover:bg-amber-400 transition-all shadow-[0_0_15px_rgba(245,158,11,0.5)] flex items-center justify-center gap-1">
-							<i class="fa-solid fa-sun"></i> ElYOS
+						<button onclick="setOfficialFaction('elios')" class="w-1/2 py-2 rounded-xl font-bold text-xs bg-amber-500 text-black hover:bg-amber-400 transition-all shadow-[0_0_15px_rgba(245,158,11,0.5)] flex items-center justify-center gap-1">
+							<i class="fa-solid fa-sun"></i> ELIOS
 						</button>
 						<button onclick="setOfficialFaction('asmo')" class="w-1/2 py-2 rounded-xl font-bold text-xs bg-mystic-600 text-white hover:bg-mystic-500 transition-all shadow-[0_0_15px_rgba(157,78,221,0.5)] flex items-center justify-center gap-1">
 							<i class="fa-solid fa-moon"></i> ASMODIANOS
@@ -257,7 +257,7 @@
 				<!-- 3D GSAP ANIMATED SHIELD CREST WITH VIOLET AURA -->
 				<div id="hero-shield-container" class="relative my-4 cursor-pointer">
 					<div class="absolute inset-0 rounded-full bg-gradient-to-r from-mystic-600/40 to-epicBlue-500/40 blur-3xl transform scale-110 pointer-events-none animate-pulse"></div>
-					<img id="hero-shield" src="/aion2/Heroes.png" alt="Escudo Oficial Clan HEROES" class="shield-aura w-72 sm:w-96 md:w-[440px] h-auto relative z-10" onError="this.style.display='none'; document.getElementById('shield-fallback').style.display='flex';">
+					<img id="hero-shield" src="Heroes.png" alt="Escudo Oficial Clan HEROES" class="shield-aura w-72 sm:w-96 md:w-[440px] h-auto relative z-10" onError="this.style.display='none'; document.getElementById('shield-fallback').style.display='flex';">
 						<!-- Fallback Icon visual si la imagen local no está presente -->
 						<div id="shield-fallback" class="hidden w-48 h-48 sm:w-64 sm:h-64 rounded-full border-2 border-mystic-400 glass-panel items-center justify-center relative z-10 mx-auto shadow-[0_0_30px_rgba(157,78,221,0.8)]">
 							<i class="fa-solid fa-shield-halved text-7xl text-epicBlue-300"></i>
@@ -727,7 +727,7 @@
 			/* ----------------------------------------------------
 			* 3. GESTIÓN DEL NOMBRE DEL SERVIDOR DINÁMICO (Admin)
 			* ---------------------------------------------------- */
-			let currentServer = localStorage.getItem('heroes_server_name') || 'ATHILA';
+			let currentServer = 'ATHILA';
 
 			function updateServerDisplay() {
 				// Actualizar Title de la pestaña
@@ -755,36 +755,37 @@
 				const inputVal = document.getElementById('server-name-input').value.trim();
 				if (inputVal) {
 					currentServer = inputVal.toUpperCase();
-					localStorage.setItem('heroes_server_name', currentServer);
 					updateServerDisplay();
-					alert(`¡Servidor actualizado a: ${currentServer}!`);
+					alert(`¡Servidor cambiado en pantalla a: ${currentServer}!\n\n(Recuerda actualizar el valor en tu data.json para que quede guardado permanentemente).`);
 				}
 			}
 
 			/* ----------------------------------------------------
 			* 4. GESTIÓN DEL BANDO OFICIAL DEL CLAN (Admin)
 			* ---------------------------------------------------- */
-			let currentFaction = localStorage.getItem('heroes_official_faction') || 'elios';
+			let currentFaction = 'elios';
 
 			function updateFactionDisplay() {
 				const factionTitle = document.getElementById('faction-title');
 				const factionDesc = document.getElementById('faction-desc');
 
+				if (!factionTitle || !factionDesc) return;
+
 				if (currentFaction === 'elios') {
 					factionTitle.textContent = "Elios (Luz Celestial)";
 					factionTitle.className = "font-medieval text-3xl font-bold text-amber-300 mb-3 drop-shadow-[0_0_10px_rgba(252,225,130,0.5)]";
 					factionDesc.innerHTML = `En esta ocasión, la legión HEROES ha fijado su destino en Elysea. Volaremos con alas doradas defendiendo la luz celestial en el servidor <strong class="text-white">${currentServer} (EU)</strong>. ¡Asegúrate de seleccionar esta facción al crear tu personaje!`;
-			} else {
-			factionTitle.textContent = "Asmodianos (Sombras de Asmodae)";
-			factionTitle.className = "font-medieval text-3xl font-bold text-mystic-400 mb-3 drop-shadow-[0_0_10px_rgba(157,78,221,0.5)]";
-			factionDesc.innerHTML = `En esta ocasión, la legión HEROES marchará bajo el firmamento de Asmodae. Lucharemos con garras de acero y la ferocidad del Abismo en el servidor <strong class="text-white">${currentServer} (EU)</strong>. ¡Asegúrate de seleccionar esta facción al crear tu personaje!`;
-			}
+				} else {
+					factionTitle.textContent = "Asmodianos (Sombras de Asmodae)";
+					factionTitle.className = "font-medieval text-3xl font-bold text-mystic-400 mb-3 drop-shadow-[0_0_10px_rgba(157,78,221,0.5)]";
+					factionDesc.innerHTML = `En esta ocasión, la legión HEROES marchará bajo el firmamento de Asmodae. Lucharemos con garras de acero y la ferocidad del Abismo en el servidor <strong class="text-white">${currentServer} (EU)</strong>. ¡Asegúrate de seleccionar esta facción al crear tu personaje!`;
+				}
 			}
 
 			function setOfficialFaction(faction) {
-			currentFaction = faction;
-			localStorage.setItem('heroes_official_faction', faction);
-			updateFactionDisplay();
+				currentFaction = faction;
+				updateFactionDisplay();
+				alert(`¡Bando cambiado en pantalla a: ${faction.toUpperCase()}!\n\n(Recuerda actualizar el valor en tu data.json para que quede guardado permanentemente).`);
 			}
 
 			/* ----------------------------------------------------
@@ -794,10 +795,8 @@
 			const DISCORD_LINK = "https://discord.gg/akcK25ARV";
 			let isAdmin = false;
 
-			let players = JSON.parse(localStorage.getItem('heroes_players')) || [
-			{ nick: "Ares", class: "Gladiador / Templario", rank: "Veterano AION", msg: "Tanque principal para Raids" },
-			{ nick: "Luna", class: "Clérigo / Canto", rank: "Experiencia en MMOs", msg: "Main Healer" }
-			];
+			// Se inicializa vacío porque los miembros se cargan desde data.json
+			let players = [];
 
 			const form = document.getElementById('playerForm');
 			const playerList = document.getElementById('playerList');
@@ -806,104 +805,118 @@
 			const actionHeader = document.getElementById('actionHeader');
 			const adminControlPanel = document.getElementById('admin-control-panel');
 
-			function saveAndRender() {
-			localStorage.setItem('heroes_players', JSON.stringify(players));
-			renderTable();
-			}
-
 			function renderTable() {
-			playerList.innerHTML = '';
-			memberCount.textContent = players.length;
+				playerList.innerHTML = '';
+				memberCount.textContent = players.length;
 
-			if (players.length === 0) {
-			playerList.innerHTML = `<tr>
-				<td colspan="4" class="p-6 text-center text-slate-400 italic">No hay registros aún. ¡Sé el primero en unirte a la Legión!</td>
-			</tr>`;
-			return;
-			}
+				if (players.length === 0) {
+					playerList.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400 italic">No hay registros aún. ¡Sé el primero en unirte a la Legión!</td></tr>`;
+					return;
+				}
 
-			players.forEach((player, index) => {
-			const tr = document.createElement('tr');
-			tr.className = "hover:bg-mystic-800/20 transition-colors";
+				players.forEach((player, index) => {
+					const tr = document.createElement('tr');
+					tr.className = "hover:bg-mystic-800/20 transition-colors";
 
-			tr.innerHTML = `
-			<td class="p-3.5 font-semibold text-white">
-				${escapeHtml(player.nick)}
-				${player.msg ? `<div class="text-[10px] text-slate-400 font-normal mt-0.5">${escapeHtml(player.msg)}</div>` : ''}
-			</td>
-			<td class="p-3.5 text-mystic-400 font-medium">${escapeHtml(player.class)}</td>
-			<td class="p-3.5">
-				<span class="bg-astral-950/80 text-epicBlue-300 text-[10px] px-2.5 py-1 rounded-full border border-mystic-500/30">${escapeHtml(player.rank)}</span>
-			</td>
-			${isAdmin ? `
-			<td class="p-3.5 text-right">
-				<button onclick="deletePlayer(${index})" class="text-rose-300 hover:text-white bg-rose-950/50 hover:bg-rose-900/80 border border-rose-500/40 px-2.5 py-1 rounded-lg text-[10px] transition-all">
-					<i class="fa-solid fa-trash"></i> Borrar
-				</button>
-			</td>
-			` : ''}
-			`;
-			playerList.appendChild(tr);
-			});
+					tr.innerHTML = `
+					<td class="p-3.5 font-semibold text-white">
+						${escapeHtml(player.nick)}
+						${player.msg ? `<div class="text-[10px] text-slate-400 font-normal mt-0.5">${escapeHtml(player.msg)}</div>` : ''}
+					</td>
+					<td class="p-3.5 text-mystic-400 font-medium">${escapeHtml(player.class)}</td>
+					<td class="p-3.5">
+						<span class="bg-astral-950/80 text-epicBlue-300 text-[10px] px-2.5 py-1 rounded-full border border-mystic-500/30">${escapeHtml(player.rank)}</span>
+					</td>
+					${isAdmin ? `
+					<td class="p-3.5 text-right">
+						<button onclick="deletePlayer(${index})" class="text-rose-300 hover:text-white bg-rose-950/50 hover:bg-rose-900/80 border border-rose-500/40 px-2.5 py-1 rounded-lg text-[10px] transition-all">
+							<i class="fa-solid fa-trash"></i> Borrar
+						</button>
+					</td>
+					` : ''}
+					`;
+					playerList.appendChild(tr);
+				});
 			}
 
 			form.addEventListener('submit', (e) => {
-			e.preventDefault();
-			const nick = document.getElementById('nickname').value.trim();
-			const playerClass = document.getElementById('playerClass').value;
-			const rank = document.getElementById('skillRank').value;
-			const msg = document.getElementById('playerMessage').value.trim();
+				e.preventDefault();
+				const nick = document.getElementById('nickname').value.trim();
+				const playerClass = document.getElementById('playerClass').value;
+				const rank = document.getElementById('skillRank').value;
+				const msg = document.getElementById('playerMessage').value.trim();
 
-			if (nick && playerClass && rank) {
-			players.push({ nick, class: playerClass, rank, msg });
-			saveAndRender();
-			form.reset();
+				if (nick && playerClass && rank) {
+					players.push({ nick, class: playerClass, rank, msg });
+					renderTable();
+					form.reset();
 
-			window.open(DISCORD_LINK, '_blank');
-			}
+					window.open(DISCORD_LINK, '_blank');
+				}
 			});
 
 			function deletePlayer(index) {
-			if (isAdmin && confirm(`¿Seguro que deseas eliminar a ${players[index].nick}?`)) {
-			players.splice(index, 1);
-			saveAndRender();
-			}
+				if (isAdmin && confirm(`¿Seguro que deseas eliminar a ${players[index].nick}?`)) {
+					players.splice(index, 1);
+					renderTable();
+				}
 			}
 
 			function toggleAdminMode() {
-			const inputCode = document.getElementById('adminCodeInput').value;
-			if (isAdmin) {
-			isAdmin = false;
-			} else {
-			if (inputCode === SECRET_CODE) {
-			isAdmin = true;
-			document.getElementById('adminCodeInput').value = '';
-			} else {
-			alert("Código incorrecto.");
-			return;
-			}
-			}
+				const inputCode = document.getElementById('adminCodeInput').value;
+				if (isAdmin) {
+					isAdmin = false;
+				} else {
+					if (inputCode === SECRET_CODE) {
+						isAdmin = true;
+						document.getElementById('adminCodeInput').value = '';
+					} else {
+						alert("Código incorrecto.");
+						return;
+					}
+				}
 
-			adminBadge.classList.toggle('hidden', !isAdmin);
-			actionHeader.classList.toggle('hidden', !isAdmin);
-			adminControlPanel.classList.toggle('hidden', !isAdmin);
-			renderTable();
+				adminBadge.classList.toggle('hidden', !isAdmin);
+				actionHeader.classList.toggle('hidden', !isAdmin);
+				adminControlPanel.classList.toggle('hidden', !isAdmin);
+				renderTable();
 			}
 
 			function escapeHtml(text) {
-			return text.replace(/[&<>"']/g, function(m) {
-			return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
-			});
+				return text.replace(/[&<>"']/g, function(m) {
+					return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+				});
 			}
 
-			// Carga e inicialización al abrir la página
+			// Carga e inicialización al abrir la página desde data.json
 			window.onload = function() {
-			initThreeJS();
-			initGSAP();
-			updateServerDisplay();
-			updateFactionDisplay();
-			renderTable();
+				initThreeJS();
+				initGSAP();
+
+				// Cargar datos del archivo data.json en el servidor
+				fetch('data.json')
+					.then(response => {
+						if (!response.ok) {
+							throw new Error("No se pudo cargar el archivo data.json");
+						}
+						return response.json();
+					})
+					.then(data => {
+						if (data.serverName) currentServer = data.serverName;
+						if (data.officialFaction) currentFaction = data.officialFaction;
+						if (data.players) players = data.players;
+
+						updateServerDisplay();
+						updateFactionDisplay();
+						renderTable();
+					})
+					.catch(error => {
+						console.error("Error al cargar data.json:", error);
+						updateServerDisplay();
+						updateFactionDisplay();
+						renderTable();
+					});
 			};
-		</script>
+			</script>
 	</body>
 </html>
