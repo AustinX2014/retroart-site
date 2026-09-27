@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title id="page-title">Clan HEROES - AION 2 | Servidor EU</title>
+				<title id="page-title">Clan HEROES - AION 2 | Servidor  EU</title>
 
 				<!-- Google Fonts: Medieval & Fantasy Typography -->
 				<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -457,14 +457,14 @@
 			<div class="grid md:grid-cols-2 gap-10 items-start">
 
 				<!-- Capítulo IV: Formulario de Registro -->
-				<div id="capitulo-4" class="glass-panel p-8 sm:p-10 rounded-3xl border border-mystic-500/50 relative shadow-2xl transition-all">
+				<div id="capitulo-4" class="hidden glass-panel p-8 sm:p-10 rounded-3xl border border-mystic-500/50 relative shadow-2xl transition-all">
 					<div class="mb-6">
 						<span class="text-xs font-orbitron text-epicBlue-400 font-bold uppercase tracking-widest">Capítulo IV</span>
 						<h2 class="font-medieval text-2xl sm:text-3xl font-bold text-gold-gradient flex items-center gap-3 mt-1">
 							<i class="fa-solid fa-scroll text-epicBlue-400"></i> La Llamada a las Armas
 						</h2>
 						<p class="text-xs text-slate-400 font-orbitron mt-1">
-							Únete a la Legión en el Servidor <span class="dynamic-server-name text-slate-200">ATHILA (EU)</span>
+							Gestión de miembros — solo disponible para el administrador · Servidor <span class="dynamic-server-name text-slate-200">ATHILA (EU)</span>
 						</p>
 					</div>
 
@@ -725,78 +725,15 @@
 			}
 
 			/* ----------------------------------------------------
-			* 3. GESTIÓN DEL NOMBRE DEL SERVIDOR DINÁMICO (Admin)
+			* 3-5. DATOS, ADMINISTRACIÓN Y PERSISTENCIA
+			* Los datos se guardan en Cloudflare D1 mediante /api.
+			* El navegador nunca contiene la contraseña de administrador.
 			* ---------------------------------------------------- */
-			let currentServer = 'ATHILA';
-
-			function updateServerDisplay() {
-				// Actualizar Title de la pestaña
-				document.getElementById('page-title').textContent = `Clan HEROES - AION 2 | Servidor ${currentServer} EU`;
-
-				// Actualizar clases dynamic-server-name
-				document.querySelectorAll('.dynamic-server-name').forEach(el => {
-					el.textContent = `${currentServer} (EU)`;
-				});
-
-				// Actualizar clases dynamic-server-pure
-				document.querySelectorAll('.dynamic-server-pure').forEach(el => {
-					el.textContent = currentServer;
-				});
-
-				// Actualizar input del panel admin
-				const input = document.getElementById('server-name-input');
-				if (input) input.value = currentServer;
-
-				// Refrescar Bando si contiene texto de servidor
-				updateFactionDisplay();
-			}
-
-			function saveServerName() {
-				const inputVal = document.getElementById('server-name-input').value.trim();
-				if (inputVal) {
-					currentServer = inputVal.toUpperCase();
-					updateServerDisplay();
-					alert(`¡Servidor cambiado en pantalla a: ${currentServer}!\n\n(Recuerda actualizar el valor en tu data.json para que quede guardado permanentemente).`);
-				}
-			}
-
-			/* ----------------------------------------------------
-			* 4. GESTIÓN DEL BANDO OFICIAL DEL CLAN (Admin)
-			* ---------------------------------------------------- */
-			let currentFaction = 'elios';
-
-			function updateFactionDisplay() {
-				const factionTitle = document.getElementById('faction-title');
-				const factionDesc = document.getElementById('faction-desc');
-
-				if (!factionTitle || !factionDesc) return;
-
-				if (currentFaction === 'elios') {
-					factionTitle.textContent = "Elios (Luz Celestial)";
-					factionTitle.className = "font-medieval text-3xl font-bold text-amber-300 mb-3 drop-shadow-[0_0_10px_rgba(252,225,130,0.5)]";
-					factionDesc.innerHTML = `En esta ocasión, la legión HEROES ha fijado su destino en Elysea. Volaremos con alas doradas defendiendo la luz celestial en el servidor <strong class="text-white">${currentServer} (EU)</strong>. ¡Asegúrate de seleccionar esta facción al crear tu personaje!`;
-				} else {
-					factionTitle.textContent = "Asmodianos (Sombras de Asmodae)";
-					factionTitle.className = "font-medieval text-3xl font-bold text-mystic-400 mb-3 drop-shadow-[0_0_10px_rgba(157,78,221,0.5)]";
-					factionDesc.innerHTML = `En esta ocasión, la legión HEROES marchará bajo el firmamento de Asmodae. Lucharemos con garras de acero y la ferocidad del Abismo en el servidor <strong class="text-white">${currentServer} (EU)</strong>. ¡Asegúrate de seleccionar esta facción al crear tu personaje!`;
-				}
-			}
-
-			function setOfficialFaction(faction) {
-				currentFaction = faction;
-				updateFactionDisplay();
-				alert(`¡Bando cambiado en pantalla a: ${faction.toUpperCase()}!\n\n(Recuerda actualizar el valor en tu data.json para que quede guardado permanentemente).`);
-			}
-
-			/* ----------------------------------------------------
-			* 5. LÓGICA DE REGISTRO Y ADMINISTRACIÓN DE MIEMBROS
-			* ---------------------------------------------------- */
-			const SECRET_CODE = "2001982";
 			const DISCORD_LINK = "https://discord.gg/akcK25ARV";
 			let isAdmin = false;
-
-			// Se inicializa vacío porque los miembros se cargan desde data.json
 			let players = [];
+			let currentServer = 'ATHILA';
+			let currentFaction = 'elyos';
 
 			const form = document.getElementById('playerForm');
 			const playerList = document.getElementById('playerList');
@@ -804,82 +741,187 @@
 			const adminBadge = document.getElementById('adminBadge');
 			const actionHeader = document.getElementById('actionHeader');
 			const adminControlPanel = document.getElementById('admin-control-panel');
+			const adminFormPanel = document.getElementById('capitulo-4');
+
+			function updateServerDisplay() {
+				document.getElementById('page-title').textContent = `Clan HEROES - AION 2 | Servidor ${currentServer} EU`;
+				document.querySelectorAll('.dynamic-server-name').forEach(el => el.textContent = `${currentServer} (EU)`);
+				document.querySelectorAll('.dynamic-server-pure').forEach(el => el.textContent = currentServer);
+				const input = document.getElementById('server-name-input');
+				if (input) input.value = currentServer;
+				updateFactionDisplay();
+			}
+
+			async function saveServerName() {
+				if (!isAdmin) return;
+				const inputVal = document.getElementById('server-name-input').value.trim();
+				if (!inputVal) return;
+				try {
+					const response = await fetch('/api/admin/settings', {
+						method: 'PUT',
+						credentials: 'same-origin',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ serverName: inputVal, officialFaction: currentFaction })
+					});
+					if (!response.ok) throw new Error((await response.json()).error || 'No se pudo guardar.');
+					const data = await response.json();
+					applyData(data);
+					alert(`Servidor guardado: ${currentServer}`);
+				} catch (error) {
+					console.error(error);
+					alert(error.message || 'No se pudo guardar el servidor.');
+				}
+			}
+
+			function updateFactionDisplay() {
+				const factionTitle = document.getElementById('faction-title');
+				const factionDesc = document.getElementById('faction-desc');
+				if (!factionTitle || !factionDesc) return;
+				if (currentFaction === 'elyos') {
+					factionTitle.textContent = "Elyos (Luz Celestial)";
+					factionTitle.className = "font-medieval text-3xl font-bold text-amber-300 mb-3 drop-shadow-[0_0_10px_rgba(252,225,130,0.5)]";
+					factionDesc.innerHTML = `En esta ocasión, la legión HEROES ha fijado su destino en Elysea. Volaremos con alas doradas defendiendo la luz celestial en el servidor <strong class="text-white">${escapeHtml(currentServer)} (EU)</strong>. ¡Asegúrate de seleccionar esta facción al crear tu personaje!`;
+				} else {
+					factionTitle.textContent = "Asmodianos (Sombras de Asmodae)";
+					factionTitle.className = "font-medieval text-3xl font-bold text-mystic-400 mb-3 drop-shadow-[0_0_10px_rgba(157,78,221,0.5)]";
+					factionDesc.innerHTML = `En esta ocasión, la legión HEROES marchará bajo el firmamento de Asmodae. Lucharemos con garras de acero y la ferocidad del Abismo en el servidor <strong class="text-white">${escapeHtml(currentServer)} (EU)</strong>. ¡Asegúrate de seleccionar esta facción al crear tu personaje!`;
+				}
+			}
+
+			async function setOfficialFaction(faction) {
+				if (!isAdmin) return;
+				try {
+					const response = await fetch('/api/admin/settings', {
+						method: 'PUT',
+						credentials: 'same-origin',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ serverName: currentServer, officialFaction: faction })
+					});
+					if (!response.ok) throw new Error((await response.json()).error || 'No se pudo guardar.');
+					const data = await response.json();
+					applyData(data);
+					alert(`Bando guardado: ${faction.toUpperCase()}`);
+				} catch (error) {
+					console.error(error);
+					alert(error.message || 'No se pudo guardar el bando.');
+				}
+			}
+
+			function applyData(data) {
+				if (data.serverName) currentServer = data.serverName;
+				if (data.officialFaction) currentFaction = data.officialFaction;
+				players = Array.isArray(data.players) ? data.players : [];
+				updateServerDisplay();
+				updateFactionDisplay();
+				renderTable();
+			}
 
 			function renderTable() {
 				playerList.innerHTML = '';
 				memberCount.textContent = players.length;
-
 				if (players.length === 0) {
-					playerList.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400 italic">No hay registros aún. ¡Sé el primero en unirte a la Legión!</td></tr>`;
+					playerList.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400 italic">No hay miembros registrados.</td></tr>`;
 					return;
 				}
-
-				players.forEach((player, index) => {
+				players.forEach((player) => {
 					const tr = document.createElement('tr');
 					tr.className = "hover:bg-mystic-800/20 transition-colors";
-
 					tr.innerHTML = `
 					<td class="p-3.5 font-semibold text-white">
 						${escapeHtml(player.nick)}
 						${player.msg ? `<div class="text-[10px] text-slate-400 font-normal mt-0.5">${escapeHtml(player.msg)}</div>` : ''}
 					</td>
 					<td class="p-3.5 text-mystic-400 font-medium">${escapeHtml(player.class)}</td>
-					<td class="p-3.5">
-						<span class="bg-astral-950/80 text-epicBlue-300 text-[10px] px-2.5 py-1 rounded-full border border-mystic-500/30">${escapeHtml(player.rank)}</span>
-					</td>
-					${isAdmin ? `
-					<td class="p-3.5 text-right">
-						<button onclick="deletePlayer(${index})" class="text-rose-300 hover:text-white bg-rose-950/50 hover:bg-rose-900/80 border border-rose-500/40 px-2.5 py-1 rounded-lg text-[10px] transition-all">
-							<i class="fa-solid fa-trash"></i> Borrar
-						</button>
-					</td>
-					` : ''}
+					<td class="p-3.5"><span class="bg-astral-950/80 text-epicBlue-300 text-[10px] px-2.5 py-1 rounded-full border border-mystic-500/30">${escapeHtml(player.rank)}</span></td>
+					${isAdmin ? `<td class="p-3.5 text-right"><button onclick="deletePlayer(${Number(player.id)})" class="text-rose-300 hover:text-white bg-rose-950/50 hover:bg-rose-900/80 border border-rose-500/40 px-2.5 py-1 rounded-lg text-[10px] transition-all"><i class="fa-solid fa-trash"></i> Borrar</button></td>` : ''}
 					`;
 					playerList.appendChild(tr);
 				});
 			}
 
-			form.addEventListener('submit', (e) => {
+			form.addEventListener('submit', async (e) => {
 				e.preventDefault();
+				if (!isAdmin) return;
 				const nick = document.getElementById('nickname').value.trim();
 				const playerClass = document.getElementById('playerClass').value;
 				const rank = document.getElementById('skillRank').value;
 				const msg = document.getElementById('playerMessage').value.trim();
-
-				if (nick && playerClass && rank) {
-					players.push({ nick, class: playerClass, rank, msg });
-					renderTable();
+				if (!nick || !playerClass || !rank) return;
+				try {
+					const response = await fetch('/api/admin/players', {
+						method: 'POST', credentials: 'same-origin',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ nick, class: playerClass, rank, msg })
+					});
+					if (!response.ok) throw new Error((await response.json()).error || 'No se pudo guardar el jugador.');
+					applyData(await response.json());
 					form.reset();
-
 					window.open(DISCORD_LINK, '_blank');
+				} catch (error) {
+					alert(error.message || 'No se pudo guardar el jugador.');
 				}
 			});
 
-			function deletePlayer(index) {
-				if (isAdmin && confirm(`¿Seguro que deseas eliminar a ${players[index].nick}?`)) {
-					players.splice(index, 1);
-					renderTable();
+			async function deletePlayer(id) {
+				if (!isAdmin) return;
+				const player = players.find(p => Number(p.id) === Number(id));
+				if (!player || !confirm(`¿Seguro que deseas eliminar a ${player.nick}?`)) return;
+				try {
+					const response = await fetch(`/api/admin/players/${encodeURIComponent(id)}`, { method: 'DELETE', credentials: 'same-origin' });
+					if (!response.ok) throw new Error((await response.json()).error || 'No se pudo eliminar.');
+					applyData(await response.json());
+				} catch (error) {
+					alert(error.message || 'No se pudo eliminar el jugador.');
 				}
 			}
 
-			function toggleAdminMode() {
-				const inputCode = document.getElementById('adminCodeInput').value;
+			async function toggleAdminMode() {
 				if (isAdmin) {
+					try { await fetch('/api/admin/logout', { method: 'POST', credentials: 'same-origin' }); } catch (_) {}
 					isAdmin = false;
-				} else {
-					if (inputCode === SECRET_CODE) {
-						isAdmin = true;
-						document.getElementById('adminCodeInput').value = '';
-					} else {
-						alert("Código incorrecto.");
-						return;
-					}
+					setAdminUI();
+					return;
 				}
 
+				const inputCode = document.getElementById('adminCodeInput').value;
+				if (!inputCode) return;
+				try {
+					const response = await fetch('/api/admin/login', {
+						method: 'POST', credentials: 'same-origin',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ password: inputCode })
+					});
+					if (!response.ok) throw new Error((await response.json()).error || 'Código incorrecto.');
+					isAdmin = true;
+				document.getElementById('adminCodeInput').value = '';
+					setAdminUI();
+					await loadData();
+				} catch (error) {
+					alert(error.message || 'No se pudo iniciar sesión.');
+				}
+			}
+
+			function setAdminUI() {
 				adminBadge.classList.toggle('hidden', !isAdmin);
 				actionHeader.classList.toggle('hidden', !isAdmin);
 				adminControlPanel.classList.toggle('hidden', !isAdmin);
+				adminFormPanel.classList.toggle('hidden', !isAdmin);
+				const button = document.querySelector('#adminCodeInput + button');
+				if (button) button.innerHTML = isAdmin ? '<i class="fa-solid fa-right-from-bracket"></i> Salir' : 'Acceder';
 				renderTable();
+			}
+
+			async function loadData() {
+				try {
+					const response = await fetch('/api/data', { credentials: 'same-origin', cache: 'no-store' });
+					if (!response.ok) throw new Error('No se pudieron cargar los datos.');
+					applyData(await response.json());
+				} catch (error) {
+					console.error(error);
+					updateServerDisplay();
+					updateFactionDisplay();
+					renderTable();
+				}
 			}
 
 			function escapeHtml(text) {
@@ -888,34 +930,16 @@
 				});
 			}
 
-			// Carga e inicialización al abrir la página desde data.json
-			window.onload = function() {
+			window.onload = async function() {
 				initThreeJS();
 				initGSAP();
-
-				// Cargar datos del archivo data.json en el servidor
-				fetch('data.json')
-					.then(response => {
-						if (!response.ok) {
-							throw new Error("No se pudo cargar el archivo data.json");
-						}
-						return response.json();
-					})
-					.then(data => {
-						if (data.serverName) currentServer = data.serverName;
-						if (data.officialFaction) currentFaction = data.officialFaction;
-						if (data.players) players = data.players;
-
-						updateServerDisplay();
-						updateFactionDisplay();
-						renderTable();
-					})
-					.catch(error => {
-						console.error("Error al cargar data.json:", error);
-						updateServerDisplay();
-						updateFactionDisplay();
-						renderTable();
-					});
+				setAdminUI();
+				await loadData();
+				try {
+					const status = await fetch('/api/admin/status', { credentials: 'same-origin', cache: 'no-store' });
+					const result = await status.json();
+					if (result.isAdmin) { isAdmin = true; setAdminUI(); }
+				} catch (_) {}
 			};
 			</script>
 	</body>
