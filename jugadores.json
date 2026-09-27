@@ -1,0 +1,20 @@
+[
+  {
+    "nick": "AustinX",
+    "clase": "Ranger",
+    "experiencia": "Veterano",
+    "lider": true
+  },
+  {
+    "nick": "Yesi",
+    "clase": "Cleric",
+    "experiencia": "Experiencia en MMOs",
+    "lider": false
+  },
+  {
+    "nick": "Javi",
+    "clase": "Spirit Master",
+    "experiencia": "Veterano Classic",
+    "lider": false
+  }
+]
