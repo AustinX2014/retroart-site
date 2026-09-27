@@ -12,6 +12,12 @@
     "lider": false
   },
   {
+    "nick": "Mario",
+    "clase": "Cleric",
+    "experiencia": "Experiencia en MMOs",
+    "lider": false
+  },
+  {
     "nick": "Javi",
     "clase": "Spirit Master",
     "experiencia": "Veterano Classic",
