@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title id="page-title">Clan HEROES - AION 2 | Servidor ATHILA EU</title>
+				<title id="page-title">Clan HEROES - AION 2 | Servidor EU</title>
 
 				<!-- Google Fonts: Medieval & Fantasy Typography -->
 				<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -232,8 +232,8 @@
 						<i class="fa-solid fa-shield-halved"></i> Bando Oficial del Clan:
 					</label>
 					<div class="flex gap-2">
-						<button onclick="setOfficialFaction('elios')" class="w-1/2 py-2 rounded-xl font-bold text-xs bg-amber-500 text-black hover:bg-amber-400 transition-all shadow-[0_0_15px_rgba(245,158,11,0.5)] flex items-center justify-center gap-1">
-							<i class="fa-solid fa-sun"></i> ELIOS
+						<button onclick="setOfficialFaction('elyos')" class="w-1/2 py-2 rounded-xl font-bold text-xs bg-amber-500 text-black hover:bg-amber-400 transition-all shadow-[0_0_15px_rgba(245,158,11,0.5)] flex items-center justify-center gap-1">
+							<i class="fa-solid fa-sun"></i> ELYOS
 						</button>
 						<button onclick="setOfficialFaction('asmo')" class="w-1/2 py-2 rounded-xl font-bold text-xs bg-mystic-600 text-white hover:bg-mystic-500 transition-all shadow-[0_0_15px_rgba(157,78,221,0.5)] flex items-center justify-center gap-1">
 							<i class="fa-solid fa-moon"></i> ASMODIANOS
@@ -257,7 +257,7 @@
 				<!-- 3D GSAP ANIMATED SHIELD CREST WITH VIOLET AURA -->
 				<div id="hero-shield-container" class="relative my-4 cursor-pointer">
 					<div class="absolute inset-0 rounded-full bg-gradient-to-r from-mystic-600/40 to-epicBlue-500/40 blur-3xl transform scale-110 pointer-events-none animate-pulse"></div>
-					<img id="hero-shield" src="Heroes.png" alt="Escudo Oficial Clan HEROES" class="shield-aura w-72 sm:w-96 md:w-[440px] h-auto relative z-10" onError="this.style.display='none'; document.getElementById('shield-fallback').style.display='flex';">
+					<img id="hero-shield" src="/aion2/Heroes.png" alt="Escudo Oficial Clan HEROES" class="shield-aura w-72 sm:w-96 md:w-[440px] h-auto relative z-10" onError="this.style.display='none'; document.getElementById('shield-fallback').style.display='flex';">
 						<!-- Fallback Icon visual si la imagen local no está presente -->
 						<div id="shield-fallback" class="hidden w-48 h-48 sm:w-64 sm:h-64 rounded-full border-2 border-mystic-400 glass-panel items-center justify-center relative z-10 mx-auto shadow-[0_0_30px_rgba(157,78,221,0.8)]">
 							<i class="fa-solid fa-shield-halved text-7xl text-epicBlue-300"></i>
