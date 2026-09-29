@@ -6,9 +6,9 @@
     "lider": true
   },
   {
-    "nick": "-",
-    "clase": "Spirit Master",
-    "experiencia": "-",
+    "nick": "Lanzerot",
+    "clase": "Chanter",
+    "experiencia": "Veterano",
     "lider": false
   },
    {
@@ -18,8 +18,14 @@
     "lider": false
   },
   {
-    "nick": "Mario",
+    "nick": "Azrxel",
     "clase": "Cleric",
+    "experiencia": "Experiencia en MMOs",
+    "lider": false
+  },
+   {
+    "nick": "Nyro",
+    "clase": "Ranger",
     "experiencia": "Novato",
     "lider": false
   },
